@@ -9,32 +9,12 @@ const ForgotPassword = () => import("./pages/forgot-password.vue");
 
 
 export default [
-    {
-        path: "/",
-        name: "Index",
-        component: Index,
-
+    { path: "/",name: "Index",component: Index,
         children: [
-            {
-                path: "/about",
-                name: "about",
-                component: About,
-            },
-             {
-                path: "/services",
-                name: "services",
-                component: Services,
-            },
-            {
-                path: "/portfolio",
-                name: "portfolio",
-                component: Portfolio,
-            },
-            {
-                path: "/contact",
-                name: "contact",
-                component: Contact,
-            },
+            { path: "/about",name: "about",component: About,   },
+            { path: "/services",name: "services",component: Services,   },
+            { path: "/portfolio", name: "portfolio", component: Portfolio, },
+            {path: "/contact",name: "contact",component: Contact,},
         ],
     },
     { path: "/login", name: "login", component: Login, },
