@@ -2,7 +2,7 @@
     <footer class="bg-light text-center text-lg-start mt-auto py-3">
         <div class="container p-4">
             <div class="text-center">
-                © 2023 MyApp
+                © 2023 Switch Laravel
             </div>
         </div>
     </footer>

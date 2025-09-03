@@ -13,7 +13,6 @@ import WebHeader from "./includes/header.vue";
 import WebFooter from "./includes/footer.vue";
 
 export default {
-
-    components: { WebHeader, WebFooter },
+     components: { WebHeader, WebFooter },
 };
 </script>
