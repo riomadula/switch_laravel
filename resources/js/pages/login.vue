@@ -55,7 +55,7 @@
 export default {
     data() {
         return {
-            email: 'jokodi@yahoo.com',
+            email: 'jessica.sanchez@vonjing.com',
             password: 'Test_123456',
 
             // Error messages
@@ -98,7 +98,7 @@ export default {
                     } else {
                         // this.onClearFields()
                         this.$swal("Success!", response.message, "success").then(() => {
-                            this.$router.push({ name: 'login' });
+                            this.$router.push({ name: 'Index' });
                         });
 
                     }
