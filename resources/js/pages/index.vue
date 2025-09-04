@@ -1,7 +1,7 @@
 <template>
     <web-header />
 
-    <main class="container">
+    <main>
         <router-view />
     </main>
 

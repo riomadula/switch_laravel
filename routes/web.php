@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Get any page from Navigation Menu
 Route::get('/{any}', function () {
           return view('welcome');
 })->where('any', '.*');

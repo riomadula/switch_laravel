@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tblUsers', function (Blueprint $table) {
-            $table->id('fldUsersID');
-            $table->string('fldUsersName')->nullable();
-            $table->string('fldUsersEmail')->unique();
-            $table->string('fldUsersPassword');
-            $table->rememberToken();
+        Schema::create('oauth_personal_access_clients', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('client_id');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tblUsers');
+        Schema::dropIfExists('oauth_personal_access_clients');
     }
 };
