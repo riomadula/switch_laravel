@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import CryptoJS from "crypto-js";
+
 export default {
     data() {
         return {
@@ -87,19 +89,23 @@ export default {
 
                     this.email_error = errors_keys.some((q) => q == "user.email") ? errors[errors_keys.indexOf("user.email")] : "";
                     this.password_error = errors_keys.some((q) => q == "user.password") ? errors[errors_keys.indexOf("user.password")] : "";
-                    //console.log('name_error', this.name_error);
+
 
                 } else {
                     // Success
                     let response = res.data.data.user;
 
+
                     if (response.error) {
                         this.$swal("Error!", response.message, "error");
                     } else {
-                        // this.onClearFields()
-                        this.$swal("Success!", response.message, "success").then(() => {
-                            this.$router.push({ name: 'Index' });
-                        });
+
+                        let secret_passphrase = process.env.MIX_SECRET_PASSPHRASE;
+                        const encryptedToken = CryptoJS.AES.encrypt(response.access_token, secret_passphrase).toString();
+
+                        sessionStorage.setItem("access-token", encryptedToken);
+                        // this.$router.push({ name: "dashboard" });
+                        window.location.href = '/dashboard';
 
                     }
 

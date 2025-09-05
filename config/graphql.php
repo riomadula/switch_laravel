@@ -80,7 +80,6 @@ return [
             'mutation' => [
                 // ExampleMutation::class,
                 "user" => App\GraphQL\Mutations\UserMutation::class,
-                //'login' => App\GraphQL\Mutations\LoginMutation::class
             ],
             // The types only available in this schema
             'types' => [
@@ -89,6 +88,30 @@ return [
 
             // Laravel HTTP middleware
             'middleware' => null,
+
+            // Which HTTP methods to support; must be given in UPPERCASE!
+            'method' => ['GET', 'POST'],
+
+            // An array of middlewares, overrides the global ones
+            'execution_middleware' => null,
+        ],
+
+        'user' => [
+            'query' => [
+                // ExampleQuery::class,
+                "user" => App\GraphQL\Queries\UserQuery::class,
+            ],
+            'mutation' => [
+                // ExampleMutation::class,
+                //"user" => App\GraphQL\Mutations\UserMutation::class,
+            ],
+            // The types only available in this schema
+            'types' => [
+                // ExampleType::class,
+            ],
+
+            // Laravel HTTP middleware
+            'middleware' => ['auth:user'],
 
             // Which HTTP methods to support; must be given in UPPERCASE!
             'method' => ['GET', 'POST'],
@@ -115,6 +138,7 @@ return [
         'user_input' => App\GraphQL\Inputs\UserInput::class,
 
         'response_type' => App\GraphQL\Types\ResponseType::class,
+        'user_type' => App\GraphQL\Types\UserType::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.

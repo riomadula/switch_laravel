@@ -1,33 +1,65 @@
 import axios from "axios";
+import CryptoJS from "crypto-js";
 
 let queries = {
     action_user: `mutation ($user: user_input) {
         user(user: $user) {
             error,
             message,
+            access_token,
+            refresh_token
         }
     }`,
+    user: `query ($action_type: String) {
+        user(action_type: $action_type) {
+            id,
+            name,
+            email,
+            address
+        }
+    }`,
+
 };
 
-// const getApiUrl = (queryName) => {
-//     let segment = "";
+const userQueries = ["user"];
 
-//     if (userQueries.some((q) => q === queryName)) {
-//         segment = "/users";
-//     }
+const getApiUrl = (queryName) => {
+    let segment = "";
 
-//     return `/graphql${segment}`;
-// };
+    if (userQueries.some((q) => q === queryName)) {
+        segment = "/user";
+    }
+
+    return `/graphql${segment}`;
+};
+
 
 const query = (queryName, queryVariables) => {
+
+    var token = '';
+    if (userQueries.some((q) => q === queryName)) {
+        var secret_passphrase = process.env.MIX_SECRET_PASSPHRASE;
+        const encryptedToken = sessionStorage.getItem("access-token");
+        token = CryptoJS.AES.decrypt(encryptedToken, secret_passphrase).toString(CryptoJS.enc.Utf8);
+    }
+
+    //console.log(token);
+
     let options = {
-        url: "/graphql",
+        //url: "/graphql",
+        url: getApiUrl(queryName),
         method: "POST",
         data: {
             query: queries[queryName],
             variables: queryVariables,
         },
     };
+
+    if (token) {
+        options.headers = {
+            Authorization: `Bearer ${token}`,
+        };
+    }
 
     //console.log(options);
     return axios(options);

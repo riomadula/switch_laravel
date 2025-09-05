@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 //use Hash;
 
@@ -31,6 +33,7 @@ class User extends Authenticatable
         return Hash::check($password, $this->fldUsersPassword);
     }
 
+    // Register Account
     public function registerAccount($data) {
 
         try {
@@ -55,7 +58,8 @@ class User extends Authenticatable
         return $response_obj;
     }
 
-       public function loginAccount($data) {
+    // Login Account
+    public function loginAccount($data) {
 
         try {
 
@@ -68,8 +72,20 @@ class User extends Authenticatable
 
             } else {
                 if(Hash::check($data['password'], $user->fldUsersPassword)) {
+                    // Success Login
+                    $oauth_helper = new OAuthHelper();  //Model
+
+                    $response = $oauth_helper->GenerateUserToken($data['email'], $data['password']);
+                    $response = json_decode($response);
+                    // log::debug(print_r($user, true));
+                    // log::debug(print_r($response, true));
+                    // log::debug(($response->access_token));
+
+                    $response_obj->access_token = $response->access_token;
+                    $response_obj->refresh_token = $response->refresh_token;
                     $response_obj->error = false;
                     $response_obj->message = "Login successful";
+
                 } else {
                     $response_obj->error = true;
                     $response_obj->message = "Invalid password";
@@ -83,4 +99,12 @@ class User extends Authenticatable
 
         return $response_obj;
     }
+
+
+    public function displayUser() {
+
+        return Auth::user();
+    }
+
+
 }

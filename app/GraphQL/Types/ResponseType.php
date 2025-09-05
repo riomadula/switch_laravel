@@ -21,6 +21,12 @@ class ResponseType extends GraphQLType
             'message' => [
                 'type' => Type::string(),
             ],
+            'access_token' => [
+                'type' => Type::string(),
+            ],
+            'refresh_token' => [
+                'type' => Type::string(),
+            ],
         ];
     }
 

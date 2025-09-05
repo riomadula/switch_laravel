@@ -3,10 +3,6 @@ const About = () => import("./pages/about.vue");
 const Services = () => import("./pages/services.vue");
 const Portfolio = () => import("./pages/portfolio.vue");
 const Contact = () => import("./pages/contact.vue");
-const Login = () => import("./pages/login.vue");
-const Register = () => import("./pages/register.vue");
-const ForgotPassword = () => import("./pages/forgot-password.vue");
-
 
 export default [
     { path: "/",name: "Index",component: Index,
@@ -17,7 +13,4 @@ export default [
             {path: "/contact",name: "contact",component: Contact,},
         ],
     },
-    { path: "/login", name: "login", component: Login, },
-    { path: "/register", name: "register", component: Register, },
-    { path: "/forgot-password",name: "forgot-password",component: ForgotPassword,},
 ];
