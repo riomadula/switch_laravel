@@ -64,7 +64,7 @@ export default {
             email_error: '',    // Email
             password_error: '', // Password
 
-            is_calling_api:false,
+            is_calling_api: false,
         }
     },
     methods: {
