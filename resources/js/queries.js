@@ -18,6 +18,18 @@ let queries = {
             refresh_token
         }
     }`,
+    update_blog_category: `mutation ($blog_category: blog_category_input) {
+        blog_category(blog_category: $blog_category) {
+            error,
+            message
+        }
+    }`,
+    delete_blog_category: `mutation ($blog_category: blog_category_input) {
+        blog_category(blog_category: $blog_category) {
+            error,
+            message
+        }
+    }`,
     user: `query ($action_type: String) {
         user(action_type: $action_type) {
             id,
@@ -36,7 +48,7 @@ let queries = {
     }`,
 };
 
-const userQueries = ["user","blog_category","save_blog_category"];
+const userQueries = ["user","blog_category","save_blog_category","update_blog_category","delete_blog_category"];
 
 const getApiUrl = (queryName) => {
     let segment = "";

@@ -1,4 +1,5 @@
 <template v-if="is_logged_in">
+    <div class="loader" v-if="is_calling_api"></div>
     <div>
         <div class="d-flex">
             <h3 class="card-title">Blog Categories</h3>
@@ -23,13 +24,22 @@
                     <td>{{ category.id }}</td>
                     <td>{{ category.title }}</td>
                     <td>{{ dateFormatter(category.date_created) }}</td>
-                   <td width="100" align="center">
-                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editRecordModal">
+                    <td width="100" align="center">
+                        <button
+                            type="button"
+                            class="btn btn-warning"
+                            @click="setEditCategory(category)"
+                            >
                             Edit
                         </button>
                     </td>
                     <td width="100" align="center">
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRecordModal">
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            @click="onDeleteCategory(category)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteRecordModal">
                             Delete
                         </button>
                     </td>
@@ -37,7 +47,7 @@
             </tbody>
         </table>
 
-        <!-- Modal -->
+        <!-- ADD NEW Modal -->
         <div class="modal fade" id="newRecordModal" tabindex="-1" aria-labelledby="newRecordModalLabel" aria-hidden="true">
             <form @submit.prevent="onSubmit">
                 <div class="modal-dialog">
@@ -61,50 +71,67 @@
                 </div>
             </form>
         </div>
+
+        <!-- EDIT Modal -->
+        <div class="modal fade" id="editRecordModal" tabindex="-1" aria-labelledby="editRecordModalLabel" aria-hidden="true" ref="editRecordModal">
+            <form @submit.prevent="onUpdate">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editRecordModalLabel">Edit Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="editName" v-model="editCategory.title" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-warning">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
-
-<!-- Moment.js plugin -->
 <script>
-import moment from "moment";        // <== Moment.js plugin
+import moment from "moment";
 
 export default {
     data() {
         return {
-            blog_category: [],   // list of categories
+            blog_category: [],
+
             newCategory: { title: "" },
+            editCategory: { id: null, title: "" },
+            deleteCategory: { id: null, title: "" },
 
             blogTitleError: "",
             is_calling_api: false,
-            is_logged_in: true, // set to false if you want login gating
+            is_logged_in: true,
         };
     },
 
     created() {
-        // Call Display the list of categories on page load (Data Listings)
         this.fetchCategories();
     },
 
     methods: {
-        // Create Function to fetch the list of categories records
         fetchCategories() {
             this.is_calling_api = true;
-
             this.$query("blog_category", {
                 action_type: "list_all_blog_categories",
             })
-                // <-- replace with your real GraphQL query name
-
                 .then((res) => {
                     this.is_calling_api = false;
-
                     if (res.data.errors) {
                         console.error(res.data.errors);
                         return;
                     }
-
-                    // 🚨 Adjust path depending on your GraphQL response structure
                     this.blog_category = res.data.data.blog_category || [];
                 })
                 .catch((err) => {
@@ -113,7 +140,7 @@ export default {
                 });
         },
 
-        // Function to handle form submission for Add New Category
+        // ADD
         onSubmit() {
             if (this.newCategory.title.trim() === "") {
                 this.blogTitleError = "Category name is required.";
@@ -132,24 +159,13 @@ export default {
                 })
                 .then((res) => {
                     this.is_calling_api = false;
-                    console.log(res);
-
                     if (res.data.errors) {
-
                         let errors = Object.values(res.data.errors[0].extensions.validation).flat();
                         this.blogTitleError = errors.length ? errors[0] : "";
-
                     } else {
-
-                        let response = res.data.data.blog_category;
-
-                        if (response.error) {
-                            this.$swal("Error!", response.message, "error");
-                        } else {
-                            this.$swal("Success!", response.message, "success").then(() => {
-                                this.fetchCategories(); // ✅ reload after save
-                            });
-                        }
+                        this.$swal("Success!", "Category added successfully", "success")
+                        this.fetchCategories()
+                        $("#newRecordModal").modal("hide");
                     }
                 })
                 .catch(() => {
@@ -159,20 +175,95 @@ export default {
 
             this.resetForm();
         },
+
+        // SET data for Edit
+        setEditCategory(category) {
+            $("#editRecordModal").modal("show");
+            this.editCategory = { ...category };
+        },
+
+        // ✅ Open Edit Modal
+        openEditModal(category) {
+            this.editCategory.id = category.fldBlogCategoryID;
+            this.editCategory.title = category.fldBlogCategoryTitle;
+
+        },
+
+        // ✅ Update Category
+        onUpdate() {
+            this.is_calling_api = true;
+            this.$query("update_blog_category", {
+                blog_category: {
+                    action_type: "update_blog_category",
+                    id: this.editCategory.id,
+                    title: this.editCategory.title,
+                },
+            })
+                .then((res) => {
+                    this.is_calling_api = false;
+                    let response = res.data.data.blog_category;
+
+                    if (response.error) {
+                        this.$swal("Error!", response.message, "error");
+                    } else {
+
+                        this.$swal("Success!", response.message, "success")
+                            .then(() => this.fetchCategories());
+                            //hide modal
+                            $("#editRecordModal").modal("hide");
+                    }
+                })
+                .catch((err) => {
+                    console.error("Update failed:", err);
+                    this.is_calling_api = false;
+                    this.$swal("Error!", this.global_error_message, "error");
+                });
+        },
+
+        onDeleteCategory(category) {
+            //console.log('category', category);
+
+            this.$swal({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+            }).then((result) => {
+                //console.log('result', result);
+                if (result.isConfirmed) {
+                    this.$query("save_blog_category", {
+                blog_category: {
+                    action_type: "delete_blog_category",
+                            // id: this.deleteCategory.id,
+                    id: category.id,
+                },
+            })
+                .then((res) => {
+                    console.log(res);
+                    this.is_calling_api = false;
+                    let response = res.data.data.blog_category;
+
+                    if (res.data.errors) {
+                        this.$swal("Error!", "Delete failed", "error");
+                    } else {
+                        this.$swal("Deleted!", response.message, "success")
+                        this.fetchCategories()
+                    }
+                })
+                .catch(() => {
+                    this.$swal("Error!", this.global_error_message, "error");
+                });
+                }
+            });
+        },
+
         resetForm() {
             this.newCategory.title = "";
         },
 
-        // Date Formatter
         dateFormatter(date) {
-            // return September 2, 2025
-            return moment(date).format("MMMM D, YYYY");   // <== Moment.js plugin
+            return moment(date).format("MMMM D, YYYY");
         },
-    },
-
-    // To mount the Function component on page load
-    mounted() {
-        this.fetchCategories(); // ✅ load records on page load
     },
 };
 </script>

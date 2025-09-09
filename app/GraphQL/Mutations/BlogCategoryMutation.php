@@ -31,7 +31,6 @@ class BlogCategoryMutation extends Mutation
         $rules = [];
 
         if ($blog_category['action_type'] == "create_new_blog_category") {
-
             // Fields validations
             $rules['blog_category.title'] = ['required', 'string', 'max:255'];
 
@@ -65,7 +64,21 @@ class BlogCategoryMutation extends Mutation
         log::debug($blog_category);
 
         if ($blog_category['action_type'] == "create_new_blog_category") {
+
             $response_obj = $blog_category_model->createNewBlogCategory($blog_category);
+
+        }
+
+        if ($blog_category['action_type'] == 'update_blog_category') {
+
+            //return BlogCategory::updateBlogCategory($input['id'], $input);
+            $response_obj = $blog_category_model->updateBlogCategory($blog_category);
+        }
+
+        if ($blog_category['action_type'] == 'delete_blog_category') {
+
+            $response_obj = $blog_category_model->deleteBlogCategory($blog_category);
+
         }
 
         return $response_obj;

@@ -13,49 +13,55 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
- // <== Moment.js plugin
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       blog_category: [],
-      // list of categories
       newCategory: {
+        title: ""
+      },
+      editCategory: {
+        id: null,
+        title: ""
+      },
+      deleteCategory: {
+        id: null,
         title: ""
       },
       blogTitleError: "",
       is_calling_api: false,
-      is_logged_in: true // set to false if you want login gating
+      is_logged_in: true
     };
   },
   created: function created() {
-    // Call Display the list of categories on page load (Data Listings)
     this.fetchCategories();
   },
   methods: {
-    // Create Function to fetch the list of categories records
     fetchCategories: function fetchCategories() {
       var _this = this;
       this.is_calling_api = true;
       this.$query("blog_category", {
         action_type: "list_all_blog_categories"
-      })
-      // <-- replace with your real GraphQL query name
-      .then(function (res) {
+      }).then(function (res) {
         _this.is_calling_api = false;
         if (res.data.errors) {
           console.error(res.data.errors);
           return;
         }
-
-        // 🚨 Adjust path depending on your GraphQL response structure
         _this.blog_category = res.data.data.blog_category || [];
       })["catch"](function (err) {
         _this.is_calling_api = false;
         console.error("Fetch categories failed:", err);
       });
     },
-    // Function to handle form submission for Add New Category
+    // ADD
     onSubmit: function onSubmit() {
       var _this2 = this;
       if (this.newCategory.title.trim() === "") {
@@ -73,19 +79,13 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (res) {
         _this2.is_calling_api = false;
-        console.log(res);
         if (res.data.errors) {
           var errors = Object.values(res.data.errors[0].extensions.validation).flat();
           _this2.blogTitleError = errors.length ? errors[0] : "";
         } else {
-          var response = res.data.data.blog_category;
-          if (response.error) {
-            _this2.$swal("Error!", response.message, "error");
-          } else {
-            _this2.$swal("Success!", response.message, "success").then(function () {
-              _this2.fetchCategories(); // ✅ reload after save
-            });
-          }
+          _this2.$swal("Success!", "Category added successfully", "success");
+          _this2.fetchCategories();
+          $("#newRecordModal").modal("hide");
         }
       })["catch"](function () {
         _this2.is_calling_api = false;
@@ -93,18 +93,84 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.resetForm();
     },
+    // SET data for Edit
+    setEditCategory: function setEditCategory(category) {
+      $("#editRecordModal").modal("show");
+      this.editCategory = _objectSpread({}, category);
+    },
+    // ✅ Open Edit Modal
+    openEditModal: function openEditModal(category) {
+      this.editCategory.id = category.fldBlogCategoryID;
+      this.editCategory.title = category.fldBlogCategoryTitle;
+    },
+    // ✅ Update Category
+    onUpdate: function onUpdate() {
+      var _this3 = this;
+      this.is_calling_api = true;
+      this.$query("update_blog_category", {
+        blog_category: {
+          action_type: "update_blog_category",
+          id: this.editCategory.id,
+          title: this.editCategory.title
+        }
+      }).then(function (res) {
+        _this3.is_calling_api = false;
+        var response = res.data.data.blog_category;
+        if (response.error) {
+          _this3.$swal("Error!", response.message, "error");
+        } else {
+          _this3.$swal("Success!", response.message, "success").then(function () {
+            return _this3.fetchCategories();
+          });
+          //hide modal
+          $("#editRecordModal").modal("hide");
+        }
+      })["catch"](function (err) {
+        console.error("Update failed:", err);
+        _this3.is_calling_api = false;
+        _this3.$swal("Error!", _this3.global_error_message, "error");
+      });
+    },
+    onDeleteCategory: function onDeleteCategory(category) {
+      var _this4 = this;
+      //console.log('category', category);
+
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true
+      }).then(function (result) {
+        //console.log('result', result);
+        if (result.isConfirmed) {
+          _this4.$query("save_blog_category", {
+            blog_category: {
+              action_type: "delete_blog_category",
+              // id: this.deleteCategory.id,
+              id: category.id
+            }
+          }).then(function (res) {
+            console.log(res);
+            _this4.is_calling_api = false;
+            var response = res.data.data.blog_category;
+            if (res.data.errors) {
+              _this4.$swal("Error!", "Delete failed", "error");
+            } else {
+              _this4.$swal("Deleted!", response.message, "success");
+              _this4.fetchCategories();
+            }
+          })["catch"](function () {
+            _this4.$swal("Error!", _this4.global_error_message, "error");
+          });
+        }
+      });
+    },
     resetForm: function resetForm() {
       this.newCategory.title = "";
     },
-    // Date Formatter
     dateFormatter: function dateFormatter(date) {
-      // return September 2, 2025
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("MMMM D, YYYY"); // <== Moment.js plugin
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("MMMM D, YYYY");
     }
-  },
-  // To mount the Function component on page load
-  mounted: function mounted() {
-    this.fetchCategories(); // ✅ load records on page load
   }
 });
 
@@ -124,33 +190,67 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "table table-bordered table-striped mt-3"
+  key: 0,
+  "class": "loader"
 };
 var _hoisted_2 = {
+  "class": "table table-bordered table-striped mt-3"
+};
+var _hoisted_3 = {
+  width: "100",
+  align: "center"
+};
+var _hoisted_4 = ["onClick"];
+var _hoisted_5 = {
+  width: "100",
+  align: "center"
+};
+var _hoisted_6 = ["onClick"];
+var _hoisted_7 = {
   "class": "modal fade",
   id: "newRecordModal",
   tabindex: "-1",
   "aria-labelledby": "newRecordModalLabel",
   "aria-hidden": "true"
 };
-var _hoisted_3 = {
+var _hoisted_8 = {
   "class": "modal-dialog"
 };
-var _hoisted_4 = {
+var _hoisted_9 = {
   "class": "modal-content"
 };
-var _hoisted_5 = {
+var _hoisted_10 = {
   "class": "modal-body"
 };
-var _hoisted_6 = {
+var _hoisted_11 = {
   "class": "mb-3"
 };
-var _hoisted_7 = {
+var _hoisted_12 = {
   key: 0,
   "class": "text-danger mt-1"
 };
+var _hoisted_13 = {
+  "class": "modal fade",
+  id: "editRecordModal",
+  tabindex: "-1",
+  "aria-labelledby": "editRecordModalLabel",
+  "aria-hidden": "true",
+  ref: "editRecordModal"
+};
+var _hoisted_14 = {
+  "class": "modal-dialog"
+};
+var _hoisted_15 = {
+  "class": "modal-content"
+};
+var _hoisted_16 = {
+  "class": "modal-body"
+};
+var _hoisted_17 = {
+  "class": "mb-3"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$data.is_calling_api ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "d-flex"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
     "class": "card-title"
@@ -161,35 +261,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "btn btn-success",
     "data-bs-toggle": "modal",
     "data-bs-target": "#newRecordModal"
-  }, " New Record ")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_1, [_cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "ID"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Name"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Date Created"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  }, " New Record ")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_2, [_cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "ID"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Name"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, "Date Created"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
     colspan: "2",
     width: "100",
     align: "center"
   }, "Actions")])], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.blog_category, function (category) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: category.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.id), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.dateFormatter(category.date_created)), 1 /* TEXT */), _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-      width: "100",
-      align: "center"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.id), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(category.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.dateFormatter(category.date_created)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       "class": "btn btn-warning",
-      "data-bs-toggle": "modal",
-      "data-bs-target": "#editRecordModal"
-    }, " Edit ")], -1 /* CACHED */)), _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-      width: "100",
-      align: "center"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      onClick: function onClick($event) {
+        return $options.setEditCategory(category);
+      }
+    }, " Edit ", 8 /* PROPS */, _hoisted_4)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       "class": "btn btn-danger",
+      onClick: function onClick($event) {
+        return $options.onDeleteCategory(category);
+      },
       "data-bs-toggle": "modal",
       "data-bs-target": "#deleteRecordModal"
-    }, " Delete ")], -1 /* CACHED */))]);
-  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+    }, " Delete ", 8 /* PROPS */, _hoisted_6)])]);
+  }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ADD NEW Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.onSubmit && $options.onSubmit.apply($options, arguments);
     }, ["prevent"]))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "modal-header"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
     "class": "modal-title",
@@ -199,7 +297,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "btn-close",
     "data-bs-dismiss": "modal",
     "aria-label": "Close"
-  })], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  })], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": "name",
     "class": "form-label"
   }, "Name", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -209,7 +307,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.newCategory.title = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newCategory.title]]), $data.blogTitleError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blogTitleError), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.newCategory.title]]), $data.blogTitleError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blogTitleError), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "modal-footer"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
@@ -218,7 +316,40 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Close"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "submit",
     "class": "btn btn-success"
-  }, "Save changes")], -1 /* CACHED */))])])], 32 /* NEED_HYDRATION */)])]);
+  }, "Save changes")], -1 /* CACHED */))])])], 32 /* NEED_HYDRATION */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" EDIT Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+    onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.onUpdate && $options.onUpdate.apply($options, arguments);
+    }, ["prevent"]))
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "modal-header"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
+    "class": "modal-title",
+    id: "editRecordModalLabel"
+  }, "Edit Category"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    "class": "btn-close",
+    "data-bs-dismiss": "modal",
+    "aria-label": "Close"
+  })], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_cache[8] || (_cache[8] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "editName",
+    "class": "form-label"
+  }, "Name", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "class": "form-control",
+    id: "editName",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $data.editCategory.title = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.editCategory.title]])])]), _cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "modal-footer"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    "class": "btn btn-secondary",
+    "data-bs-dismiss": "modal"
+  }, "Close"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    "class": "btn btn-warning"
+  }, "Update")], -1 /* CACHED */))])])], 32 /* NEED_HYDRATION */)], 512 /* NEED_PATCH */)])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),

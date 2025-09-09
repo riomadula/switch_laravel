@@ -15,6 +15,9 @@ class BlogCategoryInput extends InputType
     public function fields(): array
     {
         return [
+            'id' => [
+                'type' => Type::int(),
+            ],
             'title' => [
                 'type' => Type::string(),
             ],

@@ -26,6 +26,7 @@ class BlogCategory extends Authenticatable
 
         try {
             $category = new self;
+            // $category = new BlogCategory();
             $response_obj = new \stdClass();
 
             $category->fldBlogCategoryTitle = $data['title'];
@@ -65,6 +66,49 @@ class BlogCategory extends Authenticatable
     {
         return self::get();
     }
-}
 
+    // Update a blog category
+    public static function updateBlogCategory($data)
+    {
+        $response_obj  = new \stdClass();
+
+        $blog_category = self::find($data['id']);
+        $blog_category->fldBlogCategoryTitle = $data['title'];
+        $blog_category->fldBlogCategoryDateModified = date('Y-m-d H:i:s');
+        $blog_category->save();
+
+        $response_obj->error = false;
+        $response_obj->message = "Category updated successfully";
+
+        return $response_obj;
+    }
+
+    // Delete a blog category
+    public static function deleteBlogCategory($data)
+    {
+        $response_obj = new \stdClass();
+
+        $category = self::find($data['id']);
+        $category->delete();
+
+        $response_obj->error = false;
+        $response_obj->message = "Category deleted successfully";
+
+        return $response_obj;
+    }
+
+    /*public static function deleteBlogCategory($data)
+    {
+        $category = new self;
+        $response_obj = new \stdClass();
+
+        $category->find($data['id']);
+        $response_obj = $category->delete();
+
+        // $category = self::where('fldBlogCategoryUniqueID', $data['id'])->first();
+        // $category = BlogCategory::find($data['id']);
+
+        return $response_obj;
+    }*/
+}
 ?>
