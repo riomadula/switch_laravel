@@ -72,6 +72,7 @@ return [
     //      ],
     //  ]
     //
+    // Global Access Control
     'schemas' => [
         'default' => [
             'query' => [
@@ -96,14 +97,17 @@ return [
             'execution_middleware' => null,
         ],
 
+        // User Access Control
         'user' => [
             'query' => [
                 // ExampleQuery::class,
                 "user" => App\GraphQL\Queries\UserQuery::class,
+                "blog_category" => App\GraphQL\Queries\BlogCategoryQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
                 //"user" => App\GraphQL\Mutations\UserMutation::class,
+                "blog_category" => App\GraphQL\Mutations\BlogCategoryMutation::class,
             ],
             // The types only available in this schema
             'types' => [
@@ -119,6 +123,7 @@ return [
             // An array of middlewares, overrides the global ones
             'execution_middleware' => null,
         ],
+
     ],
 
     // The global types available to all schemas.
@@ -136,9 +141,11 @@ return [
         // \Rebing\GraphQL\Support\UploadType::class,
 
         'user_input' => App\GraphQL\Inputs\UserInput::class,
+        'blog_category_input' => App\GraphQL\Inputs\BlogCategoryInput::class,
 
         'response_type' => App\GraphQL\Types\ResponseType::class,
         'user_type' => App\GraphQL\Types\UserType::class,
+        'blog_category_type' => App\GraphQL\Types\BlogCategoryType::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.

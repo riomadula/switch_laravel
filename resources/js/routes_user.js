@@ -4,6 +4,7 @@ const ForgotPassword = () => import("./front/forgot-password.vue");
 
 const Dashboard = () => import("./user/dashboard.vue");
 const Users = () => import("./user/users.vue");
+const BlogCategories = () => import("./user/blog_categories.vue");
 
 
 export default [
@@ -13,4 +14,5 @@ export default [
 
     { path: "/dashboard", name: "dashboard", component: Dashboard, meta: { requiresAuth: true }, },
     { path: "/users", name: "users", component: Users, meta: { requiresAuth: true }, },
+    { path: "/blog-categories", name: "blog-categories", component: BlogCategories, meta: { requiresAuth: true }, },
 ];

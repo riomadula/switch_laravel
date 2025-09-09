@@ -38,7 +38,7 @@ class User extends Authenticatable
 
         try {
 
-            $user=new self;
+            $user = new self;
             $response_obj = new \stdClass();
 
             $user->fldUsersName = $data['name'];

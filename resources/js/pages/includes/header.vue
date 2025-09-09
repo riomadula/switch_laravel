@@ -42,10 +42,22 @@
 <script>
 export default {
     name: "WebHeader",
+        props: {
+        is_logged_in: {
+        type: Boolean,
+        default: false,
+        },
+    },
     methods: {
         onReload() {
             window.location.href = "/";
-        }
+        },
+        onLogout() {
+            this.is_logged_in = false;
+            sessionStorage.clear();
+            window.location.href = "/login";
+            this.$emit("update:is_logged_in", false);
+        },
     }
 }
 </script>

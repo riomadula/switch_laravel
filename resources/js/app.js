@@ -25,10 +25,28 @@ router.beforeEach((to, from, next) => {
         if (!sessionStorage.getItem("access-token")) {
             next({ name: "login" });
             return
+        } else {
+            next();
         }
     }
-
-    next();
+    else if (to.name == "login" || to.name == "register") {
+        let is_logged_in = sessionStorage.getItem("access-token");
+        if (is_logged_in) {
+            sessionStorage.clear();
+            // window.location.href = "/login";
+            // check if login or to register
+            if (to.name == "login") {
+                window.location.href = "/login";
+            } else {
+                window.location.href = "/register";
+            }
+            return
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 const app = createApp(App);
