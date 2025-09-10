@@ -103,11 +103,13 @@ return [
                 // ExampleQuery::class,
                 "user" => App\GraphQL\Queries\UserQuery::class,
                 "blog_category" => App\GraphQL\Queries\BlogCategoryQuery::class,
+                "blog_posts" => App\GraphQL\Queries\BlogPostsQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
                 //"user" => App\GraphQL\Mutations\UserMutation::class,
                 "blog_category" => App\GraphQL\Mutations\BlogCategoryMutation::class,
+                "blog_posts" => App\GraphQL\Mutations\BlogPostsMutation::class,
             ],
             // The types only available in this schema
             'types' => [
@@ -142,10 +144,12 @@ return [
 
         'user_input' => App\GraphQL\Inputs\UserInput::class,
         'blog_category_input' => App\GraphQL\Inputs\BlogCategoryInput::class,
+        'blog_posts_input' => App\GraphQL\Inputs\BlogPostsInput::class,
 
         'response_type' => App\GraphQL\Types\ResponseType::class,
         'user_type' => App\GraphQL\Types\UserType::class,
         'blog_category_type' => App\GraphQL\Types\BlogCategoryType::class,
+        'blog_posts_type' => App\GraphQL\Types\BlogPostsType::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.

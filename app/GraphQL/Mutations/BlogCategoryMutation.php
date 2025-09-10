@@ -39,6 +39,7 @@ class BlogCategoryMutation extends Mutation
 
         return $rules;
     }
+
     public function validationErrorMessages(array $args = []): array
     {
         return [

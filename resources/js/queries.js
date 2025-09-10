@@ -10,26 +10,6 @@ let queries = {
             refresh_token
         }
     }`,
-    save_blog_category: `mutation ($blog_category: blog_category_input) {
-        blog_category(blog_category: $blog_category) {
-            error,
-            message,
-            access_token,
-            refresh_token
-        }
-    }`,
-    update_blog_category: `mutation ($blog_category: blog_category_input) {
-        blog_category(blog_category: $blog_category) {
-            error,
-            message
-        }
-    }`,
-    delete_blog_category: `mutation ($blog_category: blog_category_input) {
-        blog_category(blog_category: $blog_category) {
-            error,
-            message
-        }
-    }`,
     user: `query ($action_type: String) {
         user(action_type: $action_type) {
             id,
@@ -46,9 +26,37 @@ let queries = {
             date_modified
         }
     }`,
+    save_blog_category: `mutation ($blog_category: blog_category_input) {
+        blog_category(blog_category: $blog_category) {
+            error,
+            message,
+        }
+    }`,
+    save_blog_post: `mutation ($blog_posts: blog_posts_input) {
+        blog_posts(blog_posts: $blog_posts) {
+            error,
+            message,
+        }
+    }`,
+    blog_posts: `query ($action_type: String) {
+        blog_posts(action_type: $action_type) {
+            id,
+            title,
+            caterory_id,
+            content,
+            author,
+
+        }
+    }`,
 };
 
-const userQueries = ["user","blog_category","save_blog_category","update_blog_category","delete_blog_category"];
+const userQueries = [
+    "user",
+    "blog_category",
+    "save_blog_category",
+    "blog_posts",
+    "save_blog_post",
+];
 
 const getApiUrl = (queryName) => {
     let segment = "";

@@ -44,6 +44,9 @@
                         </button>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="6" class="text-left"><strong>Total Records: {{ record_Count }}</strong></td>
+                </tr>
             </tbody>
         </table>
 
@@ -60,7 +63,7 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" v-model="newCategory.title" />
-                                <div v-if="blogTitleError" class="text-danger mt-1">{{ blogTitleError }}</div>
+                                <div v-if="blogCategoryTitleError" class="text-danger mt-1">{{ blogCategoryTitleError }}</div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -110,9 +113,10 @@ export default {
             editCategory: { id: null, title: "" },
             deleteCategory: { id: null, title: "" },
 
-            blogTitleError: "",
+            blogCategoryTitleError: "",
             is_calling_api: false,
             is_logged_in: true,
+            record_Count: 0,
         };
     },
 
@@ -128,11 +132,15 @@ export default {
             })
                 .then((res) => {
                     this.is_calling_api = false;
+                    this.record_Count = res.data.data.blog_category.length;
+
                     if (res.data.errors) {
                         console.error(res.data.errors);
                         return;
                     }
+
                     this.blog_category = res.data.data.blog_category || [];
+
                 })
                 .catch((err) => {
                     this.is_calling_api = false;
@@ -143,10 +151,10 @@ export default {
         // ADD
         onSubmit() {
             if (this.newCategory.title.trim() === "") {
-                this.blogTitleError = "Category name is required.";
+                this.blogCategoryTitleError = "Category name is required.";
                 return;
             }
-            this.blogTitleError = "";
+            this.blogCategoryTitleError = "";
             this.is_calling_api = true;
 
                 this.$query("save_blog_category", {
@@ -161,7 +169,7 @@ export default {
                     this.is_calling_api = false;
                     if (res.data.errors) {
                         let errors = Object.values(res.data.errors[0].extensions.validation).flat();
-                        this.blogTitleError = errors.length ? errors[0] : "";
+                        this.blogCategoryTitleError = errors.length ? errors[0] : "";
                     } else {
                         this.$swal("Success!", "Category added successfully", "success")
                         this.fetchCategories()
@@ -192,7 +200,7 @@ export default {
         // ✅ Update Category
         onUpdate() {
             this.is_calling_api = true;
-            this.$query("update_blog_category", {
+            this.$query("save_blog_category", {
                 blog_category: {
                     action_type: "update_blog_category",
                     id: this.editCategory.id,
