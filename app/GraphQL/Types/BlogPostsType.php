@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\Facades\GraphQL;
+
 
 class BlogPostsType extends GraphQLType
 {
@@ -25,7 +25,7 @@ class BlogPostsType extends GraphQLType
                 'type' => Type::string(),
                 'alias' => 'fldBlogPostTitle',
             ],
-            'caterory_id' => [
+            'category_id' => [
                 'type' => Type::int(),
                 'alias' => 'fldBlogPostCategoryID',
             ],
@@ -44,6 +44,9 @@ class BlogPostsType extends GraphQLType
             'date_modified' => [
                 'type' => Type::string(),
                 'alias' => 'fldBlogPostDateModified',
+            ],
+            'blog_category' => [
+                'type' => GraphQL::type('blog_category_type')
             ],
         ];
     }

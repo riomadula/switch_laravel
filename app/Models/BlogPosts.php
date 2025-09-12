@@ -9,15 +9,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use stdClass;
 
-class BlogPosts extends Authenticatable
+class BlogPosts extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'tblBlogPost';
     protected $primaryKey = 'fldBlogPostID';
-    public $timestamps = false;  // Disable default timestamps since using custom fields
+    public $timestamps = false;  // Disable default timestamps since using custom
+
+    // Relationship with Blog Category
+    public function blog_category(): BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class, 'fldBlogPostCategoryID', 'fldBlogCategoryID');
+    }
 
     // Create New Blog Post
     public static function createNewBlogPost($data) {
@@ -27,12 +34,12 @@ class BlogPosts extends Authenticatable
             $blog_posts = new self;
             $response_obj = new \stdClass();
 
-            $blog_posts->fldBlogPostTitle = $data['postTitle'];
-            $blog_posts->fldBlogPostCategoryID = $data['postCategoryId'];
-            $blog_posts->fldBlogPostContent = $data['postContent'];
-            $blog_posts->fldBlogPostAuthor = $data['postAuthor'];
-            $blog_posts->fldBlogPostDateCreated = $data['postDateCreated'];
-            $blog_posts->fldBlogPostDateModified = $data['postDateModified'];
+            $blog_posts->fldBlogPostTitle = $data['title'];
+            $blog_posts->fldBlogPostCategoryID = $data['category_id'];
+            $blog_posts->fldBlogPostContent = $data['content'];
+            $blog_posts->fldBlogPostAuthor = $data['author'];
+            $blog_posts->fldBlogPostDateCreated = date('Y-m-d H:i:s');
+            $blog_posts->fldBlogPostDateModified = date('Y-m-d H:i:s');
 
             $blog_posts->save();
 
@@ -65,7 +72,8 @@ class BlogPosts extends Authenticatable
     // Add for listing all posts
     public static function getAllBlogPosts()
     {
-        return self::get();
+        return self::with('blog_category')->get();
+        //return self::get();
     }
 
     // Update a blog post
@@ -75,11 +83,10 @@ class BlogPosts extends Authenticatable
 
         $blog_posts = self::find($data['id']);
 
-        $blog_posts->fldBlogPostTitle = $data['postTitle'];
-        $blog_posts->fldBlogPostCategoryID = $data['postCategoryId'];
-        $blog_posts->fldBlogPostContent = $data['postContent'];
-        $blog_posts->fldBlogPostAuthor = $data['postAuthor'];
-        $blog_posts->fldBlogPostDateModified = date('Y-m-d H:i:s', time());
+        $blog_posts->fldBlogPostTitle = $data['title'];
+        $blog_posts->fldBlogPostCategoryID = $data['category_id'];
+        $blog_posts->fldBlogPostContent = $data['content'];
+        $blog_posts->fldBlogPostAuthor = $data['author'];
         $blog_posts->fldBlogPostDateModified = date('Y-m-d H:i:s');
         $blog_posts->save();
 
@@ -92,15 +99,33 @@ class BlogPosts extends Authenticatable
     // Delete a blog post
     public static function deleteBlogPost($data)
     {
-        $response_obj = new \stdClass();
+        // try {
+            $response_obj = new \stdClass();
 
-        $blog_posts = self::find($data['id']);
-        $blog_posts->delete();
+            $blog_posts = self::find($data['id']);
+            if (!$blog_posts) {
+                $response_obj->error = true;
+                $response_obj->message = "Post not found";
+            } else {
+                $blog_posts->delete();
 
-        $response_obj->error = false;
-        $response_obj->message = "Post deleted successfully";
-
+                $response_obj->error = false;
+                $response_obj->message = "Post deleted successfully";
+            }
+        // } catch (\Exception $e) {
+        //     $response_obj->error = true;
+        //     $response_obj->message = $e->getMessage();
+        // }
         return $response_obj;
     }
+
+    // Get a single blog post by ID
+    public static function getBlogPostDetails($id)
+    {
+        return self::with('blog_category')->find($id);
+        // return self::where('fldBlogPostID', $id)->first();
+    }
+
+
 }
 ?>

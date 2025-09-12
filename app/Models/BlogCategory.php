@@ -97,18 +97,11 @@ class BlogCategory extends Authenticatable
         return $response_obj;
     }
 
-    /*public static function deleteBlogCategory($data)
-    {
-        $category = new self;
-        $response_obj = new \stdClass();
+    // Relationship with Blog Posts
+    // public function blogPosts()
+    // {
+    //     return $this->belongsTo(BlogPosts::class);
+    // }
 
-        $category->find($data['id']);
-        $response_obj = $category->delete();
-
-        // $category = self::where('fldBlogCategoryUniqueID', $data['id'])->first();
-        // $category = BlogCategory::find($data['id']);
-
-        return $response_obj;
-    }*/
 }
 ?>

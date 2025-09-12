@@ -4,8 +4,8 @@ const ForgotPassword = () => import("./front/forgot-password.vue");
 
 const Dashboard = () => import("./user/dashboard.vue");
 const Users = () => import("./user/users.vue");
-const BlogCategories = () => import("./user/blogs/blog_categories.vue");
-const BlogPosts = () => import("./user/blogs/blog_posts.vue");
+const BlogCategories = () => import("./user/blog_categories.vue");
+const BlogPosts = () => import("./user/blog_posts.vue");
 
 
 export default [

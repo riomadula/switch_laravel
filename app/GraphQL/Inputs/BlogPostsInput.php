@@ -18,18 +18,18 @@ class BlogPostsInput extends InputType
     {
         return [
             'id' => [
-                'type' => Type::int(),
-            ],
-            'postTitle' => [
                 'type' => Type::string(),
             ],
-            'postCategoryId' => [
-                'type' => Type::int(),
-            ],
-            'postContent' => [
+            'title' => [
                 'type' => Type::string(),
             ],
-            'postAuthor' => [
+            'category_id' => [
+                'type' => Type::string(),
+            ],
+            'content' => [
+                'type' => Type::string(),
+            ],
+            'author' => [
                 'type' => Type::string(),
             ],
             'action_type' => [

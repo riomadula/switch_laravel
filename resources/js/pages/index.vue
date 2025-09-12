@@ -2,7 +2,7 @@
     <!-- Conditional header -->
     <web-header />
 
-    <main>
+    <main class="container">
         <router-view />
     </main>
 

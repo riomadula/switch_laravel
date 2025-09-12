@@ -1,4 +1,4 @@
-<template v-if="is_logged_in">
+<template>
     <div class="loader" v-if="is_calling_api"></div>
     <div>
         <div class="d-flex">
@@ -115,7 +115,6 @@ export default {
 
             blogCategoryTitleError: "",
             is_calling_api: false,
-            is_logged_in: true,
             record_Count: 0,
         };
     },
@@ -150,10 +149,6 @@ export default {
 
         // ADD
         onSubmit() {
-            if (this.newCategory.title.trim() === "") {
-                this.blogCategoryTitleError = "Category name is required.";
-                return;
-            }
             this.blogCategoryTitleError = "";
             this.is_calling_api = true;
 
@@ -167,9 +162,12 @@ export default {
                 })
                 .then((res) => {
                     this.is_calling_api = false;
-                    if (res.data.errors) {
+                    
+                    if (res.data.errors) { // mutation
+
                         let errors = Object.values(res.data.errors[0].extensions.validation).flat();
                         this.blogCategoryTitleError = errors.length ? errors[0] : "";
+
                     } else {
                         this.$swal("Success!", "Category added successfully", "success")
                         this.fetchCategories()
@@ -194,7 +192,6 @@ export default {
         openEditModal(category) {
             this.editCategory.id = category.fldBlogCategoryID;
             this.editCategory.title = category.fldBlogCategoryTitle;
-
         },
 
         // ✅ Update Category

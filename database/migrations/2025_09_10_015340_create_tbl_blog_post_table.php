@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('fldBlogPostAuthor', 255);
             $table->dateTime('fldBlogPostDateCreated')->useCurrent();
             $table->dateTime('fldBlogPostModified')->nullable()->useCurrentOnUpdate();
-            $table->timestamps();
         });
     }
 

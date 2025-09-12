@@ -36,16 +36,30 @@ let queries = {
         blog_posts(blog_posts: $blog_posts) {
             error,
             message,
+            blog_posts {
+                id,
+                title,
+                category_id,
+                content,
+                author,
+                blog_category {
+                    id,
+                    title,
+                },
+            }
         }
     }`,
-    blog_posts: `query ($action_type: String) {
-        blog_posts(action_type: $action_type) {
+    blog_posts: `query ($action_type: String, $id: String) {
+        blog_posts(action_type: $action_type, id: $id) {
             id,
             title,
-            caterory_id,
+            category_id,
             content,
             author,
-
+            blog_category {
+                id,
+                title,
+            },
         }
     }`,
 };
@@ -56,6 +70,7 @@ const userQueries = [
     "save_blog_category",
     "blog_posts",
     "save_blog_post",
+    "blog_post_details",
 ];
 
 const getApiUrl = (queryName) => {

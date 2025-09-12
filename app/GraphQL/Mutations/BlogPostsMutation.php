@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\GraphQL\Mutations;
 
 use Closure;
@@ -28,17 +26,17 @@ class BlogPostsMutation extends Mutation
 
     protected function rules(array $args = []): array
     {
-        //log::debug($args);
+        log::debug($args);
 
         $blog_posts = $args['blog_posts'];
         $rules = [];
 
         if ($blog_posts['action_type'] == "create_new_blog_post") {
             // Fields validations
-            $rules['blog_posts.postTitle'] = ['required', 'string', 'max:255'];
-            $rules['blog_posts.postCategoryId'] = ['required', 'integer'];
-            $rules['blog_posts.postContent'] = ['required', 'string', 'max:255'];
-            $rules['blog_posts.postAuthor'] = ['required', 'string', 'max:255'];
+            $rules['blog_posts.title'] = ['required', 'string', 'max:255'];
+            $rules['blog_posts.category_id'] = ['required', 'integer'];
+            $rules['blog_posts.content'] = ['required', 'string'];
+            $rules['blog_posts.author'] = ['required', 'string', 'max:255'];
         }
 
         return $rules;
@@ -47,8 +45,10 @@ class BlogPostsMutation extends Mutation
     public function validationErrorMessages(array $args = []): array
     {
         return [
-            'blog_posts.postTitle.required' => 'Please enter Blog Post Title',
-            'blog_posts.postTitle.unique' => 'Blog Post Title already exists',
+            'blog_posts.title.required' => 'Please enter Blog Post Title',
+            'blog_posts.category_id.required' => 'Please select Blog Post Category',
+            'blog_posts.content.required' => 'Please write Blog Post Content',
+            'blog_posts.title.unique' => 'Blog Post Title already exists',
         ];
     }
 
@@ -66,21 +66,23 @@ class BlogPostsMutation extends Mutation
         $response_obj = new \stdClass();
 
         if ($blog_posts['action_type'] == "create_new_blog_post") {
-
             $response_obj = $blog_posts_model->createNewBlogPost($blog_posts);
-
         }
 
         if ($blog_posts['action_type'] == 'update_blog_post') {
-
             //return BlogPosts::updateBlogPost($input['id'], $input);
             $response_obj = $blog_posts_model->updateBlogPost($blog_posts);
         }
 
         if ($blog_posts['action_type'] == 'delete_blog_post') {
-
             $response_obj = $blog_posts_model->deleteBlogPost($blog_posts);
+        }
 
+        if ($blog_posts['action_type'] == 'get_single_blog_post') {
+            $response_obj = $blog_posts_model->getBlogPostDetails($blog_posts['id']);
+            $response_obj->blog_posts = $response_obj; // blog single
+            $response_obj->error = false;
+            $response_obj->message = 'bangege';
         }
 
         return $response_obj;

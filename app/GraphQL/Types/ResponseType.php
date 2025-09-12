@@ -4,6 +4,7 @@ namespace App\GraphQL\Types;
 use App\User;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class ResponseType extends GraphQLType
 {
@@ -26,6 +27,9 @@ class ResponseType extends GraphQLType
             ],
             'refresh_token' => [
                 'type' => Type::string(),
+            ],
+            'blog_posts' => [
+                'type' => GraphQL::type('blog_posts_type'),
             ],
         ];
     }

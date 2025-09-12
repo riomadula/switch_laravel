@@ -1,8 +1,8 @@
 <template>
-<div v-if="is_landing">
-    <!-- index.vue, home.vue, about.vue, services.vue, portfolio.vue, contact.vue -->
-    <router-view />
-</div>
+    <template v-if="is_landing">
+        <!-- index.vue, home.vue, about.vue, services.vue, portfolio.vue, contact.vue -->
+        <router-view />
+    </template>
 
     <!-- If logged in -->
     <div class="d-flex" id="wrapper" v-else-if="is_logged_in">
@@ -15,9 +15,10 @@
              <user-header :user="user" />
 
             <!--This is where each route's page will load -->
+            <!-- dashboard.vue, users.vue, blog-categories.vue, blog-posts.vue -->
             <!-- dashboard.vue, users.vue -->
             <div class="container-fluid mt-4">
-                <router-view  />
+                <router-view  :user="user" />
             </div>
         </div>
   </div>
