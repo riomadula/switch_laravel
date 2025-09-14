@@ -1,7 +1,7 @@
 <template>
     <template v-if="is_landing">
         <!-- index.vue, home.vue, about.vue, services.vue, portfolio.vue, contact.vue -->
-        <router-view />
+        <router-view :user="user" />
     </template>
 
     <!-- If logged in -->

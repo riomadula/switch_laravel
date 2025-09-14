@@ -56,13 +56,16 @@ class BlogPostsMutation extends Mutation
     {
         return [
             'blog_posts' => ['type' => GraphQL::type('blog_posts_input')],
+            'blogs' => ['type' => GraphQL::type('blog_posts_input')],
         ];
+
     }
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
         $blog_posts_model = new BlogPosts();
         $blog_posts = $args['blog_posts'];
+        $blogs = $args['blogs'];
         $response_obj = new \stdClass();
 
         if ($blog_posts['action_type'] == "create_new_blog_post") {
@@ -81,6 +84,13 @@ class BlogPostsMutation extends Mutation
         if ($blog_posts['action_type'] == 'get_single_blog_post') {
             $response_obj = $blog_posts_model->getBlogPostDetails($blog_posts['id']);
             $response_obj->blog_posts = $response_obj; // blog single
+            $response_obj->error = false;
+            $response_obj->message = 'bangege';
+        }
+
+        if ($blogs['action_type'] == 'get_single_blog_post') {
+            $response_obj = $blog_posts_model->getBlogPostDetails($blogs['id']);
+            $response_obj->blogs = $response_obj; // blog single
             $response_obj->error = false;
             $response_obj->message = 'bangege';
         }

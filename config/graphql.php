@@ -77,6 +77,8 @@ return [
         'default' => [
             'query' => [
                 // ExampleQuery::class,
+                "blog_category" => App\GraphQL\Queries\BlogCategoryQuery::class,
+                "blog_posts" => App\GraphQL\Queries\BlogPostsQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,

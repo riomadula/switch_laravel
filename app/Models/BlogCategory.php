@@ -96,12 +96,5 @@ class BlogCategory extends Authenticatable
 
         return $response_obj;
     }
-
-    // Relationship with Blog Posts
-    // public function blogPosts()
-    // {
-    //     return $this->belongsTo(BlogPosts::class);
-    // }
-
 }
 ?>

@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchSinglePost: function fetchSinglePost() {
       var _this = this;
       this.is_calling_api = true;
-      this.$query("blog_posts", {
+      this.$query("blogs", {
         action_type: "get_single_blog_post",
         id: this.$route.params.id
       }).then(function (res) {

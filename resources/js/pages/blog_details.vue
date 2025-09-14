@@ -54,7 +54,7 @@ export default {
         // Fetch Blog Posts Functions
         fetchSinglePost() {
             this.is_calling_api = true;
-            this.$query("blog_posts", {
+            this.$query("blogs", {
                 action_type: "get_single_blog_post",
                 id: this.$route.params.id,
             })

@@ -28,13 +28,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["user"],
   name: "WebHeader",
-  props: {
-    is_logged_in: {
-      type: Boolean,
-      "default": false
-    }
-  },
   methods: {
     onReload: function onReload() {
       window.location.href = "/";
@@ -65,6 +60,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["user"],
   components: {
     WebHeader: _includes_header_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     WebFooter: _includes_footer_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -170,6 +166,7 @@ var _hoisted_10 = {
   "class": "nav-item"
 };
 var _hoisted_11 = {
+  key: 0,
   "class": "navbar-nav ms-auto mb-2 mb-lg-0"
 };
 var _hoisted_12 = {
@@ -256,7 +253,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _toConsumableArray(_cache[6] || (_cache[6] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Contact", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ user }} "), !$props.user || Object.keys($props.user).length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     "class": "nav-link",
     to: {
       name: 'login'
@@ -276,7 +273,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return _toConsumableArray(_cache[8] || (_cache[8] = [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Register", -1 /* CACHED */)]));
     }),
     _: 1 /* STABLE */
-  })])])])])])]);
+  })])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]);
 }
 
 /***/ }),
@@ -300,7 +297,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_web_header = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("web-header");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
   var _component_web_footer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("web-footer");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Conditional header "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_web_header), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_view)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_web_footer)], 64 /* STABLE_FRAGMENT */);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Conditional header "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_web_header, {
+    user: $props.user
+  }, null, 8 /* PROPS */, ["user"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("main", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_view)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_web_footer)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),

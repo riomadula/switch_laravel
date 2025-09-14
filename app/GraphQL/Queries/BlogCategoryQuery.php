@@ -38,9 +38,17 @@ class BlogCategoryQuery extends Query
         if ($args['action_type'] === 'list_all_blog_categories') {
 
             $blog_category = $blog_category_model->getAllBlogCategories();
+
+            return $blog_category;
         }
 
-        return $blog_category;
+        if ($args['action_type'] === 'list_all_blog_categories') {
+
+            $blogs_category = $blog_category_model->getAllBlogCategories();
+
+            return $blogs_category;
+        }
+
     }
 }
 

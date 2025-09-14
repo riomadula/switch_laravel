@@ -66,7 +66,7 @@ export default {
          // Fetch Categories Functions
         fetchCategories() {
             this.is_calling_api = true;
-            this.$query("blog_category", {
+            this.$query("blogs_category", {
                 action_type: "list_all_blog_categories",
             })
                 .then((res) => {
@@ -93,7 +93,7 @@ export default {
         // Fetch Blog Posts Functions
         fetchBlogPosts(id) {
             this.is_calling_api = true;
-            this.$query("blog_posts", {
+            this.$query("blogs", {
                 action_type: "list_all_blog_posts",
             })
                 .then((res) => {

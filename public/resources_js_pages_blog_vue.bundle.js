@@ -32,7 +32,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchCategories: function fetchCategories() {
       var _this = this;
       this.is_calling_api = true;
-      this.$query("blog_category", {
+      this.$query("blogs_category", {
         action_type: "list_all_blog_categories"
       }).then(function (res) {
         _this.is_calling_api = false;
@@ -52,7 +52,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchBlogPosts: function fetchBlogPosts(id) {
       var _this2 = this;
       this.is_calling_api = true;
-      this.$query("blog_posts", {
+      this.$query("blogs", {
         action_type: "list_all_blog_posts"
       }).then(function (res) {
         _this2.is_calling_api = false;

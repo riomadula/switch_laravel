@@ -31,6 +31,9 @@ class ResponseType extends GraphQLType
             'blog_posts' => [
                 'type' => GraphQL::type('blog_posts_type'),
             ],
+            'blogs' => [
+                'type' => GraphQL::type('blog_posts_type'),
+            ],
         ];
     }
 

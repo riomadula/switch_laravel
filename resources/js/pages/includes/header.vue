@@ -28,7 +28,8 @@
                             <router-link class="nav-link" :to="{ name: 'contact' }">Contact</router-link>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <!-- {{ user }} -->
+                    <ul v-if="!user || Object.keys(user).length === 0" class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
                         </li>
@@ -44,13 +45,8 @@
 
 <script>
 export default {
+    props: ["user"],
     name: "WebHeader",
-        props: {
-        is_logged_in: {
-        type: Boolean,
-        default: false,
-        },
-    },
     methods: {
         onReload() {
             window.location.href = "/";

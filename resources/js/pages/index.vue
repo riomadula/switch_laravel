@@ -1,6 +1,6 @@
 <template>
     <!-- Conditional header -->
-    <web-header />
+    <web-header :user="user" />
 
     <main class="container">
         <router-view />
@@ -14,6 +14,7 @@ import WebHeader from "./includes/header.vue";
 import WebFooter from "./includes/footer.vue";
 
 export default {
+    props: ["user"],
     components: { WebHeader, WebFooter },
      data() {
         return {

@@ -26,6 +26,15 @@ let queries = {
             date_modified
         }
     }`,
+    // Blogs Category Landing Page
+    blogs_category: `query ($action_type: String) {
+        blog_category(action_type: $action_type) {
+            id,
+            title,
+            date_created,
+            date_modified
+        }
+    }`,
     save_blog_category: `mutation ($blog_category: blog_category_input) {
         blog_category(blog_category: $blog_category) {
             error,
@@ -50,6 +59,19 @@ let queries = {
         }
     }`,
     blog_posts: `query ($action_type: String, $id: String) {
+        blog_posts(action_type: $action_type, id: $id) {
+            id,
+            title,
+            category_id,
+            content,
+            author,
+            blog_category {
+                id,
+                title,
+            },
+        }
+    }`,
+    blogs: `query ($action_type: String, $id: String) {
         blog_posts(action_type: $action_type, id: $id) {
             id,
             title,
