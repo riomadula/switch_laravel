@@ -100,11 +100,121 @@ class User extends Authenticatable
         return $response_obj;
     }
 
+    // Add New User Account
+    public function addNewUserAccount($data) {
 
+        try {
+
+            $user = new self;
+            $response_obj = new \stdClass();
+
+            $user->fldUsersName = $data['name'];
+            $user->fldUsersEmail = $data['email'];
+            $user->fldUsersAddress = $data['address'];
+            $user->fldUsersPassword = Hash::make($data['password']);
+
+            $user->save();
+            $response_obj->error = false;
+            $response_obj->message = "New user created successfully";
+
+
+        } catch (\Exception $e) {
+            $response_obj->error = true;
+            $response_obj->message = $e->getMessage();
+        }
+
+        return $response_obj;
+    }
+
+    // Update Account
+    public function updateUserAccount($data)
+    {
+        $response_obj = new \stdClass();
+
+        try {
+            // Find user by ID
+            $user = self::find($data['id']);
+
+            if (!$user) {
+                $response_obj->error = true;
+                $response_obj->message = "User not found.";
+                return $response_obj;
+            }
+
+            // Update only provided fields
+            if (isset($data['name'])) {
+                $user->fldUsersName = $data['name'];
+            }
+
+            if (isset($data['email'])) {
+                $user->fldUsersEmail = $data['email'];
+            }
+
+            if (isset($data['address'])) {
+                $user->fldUsersAddress = $data['address'];
+            }
+
+            if (isset($data['password']) && !empty($data['password'])) {
+                $user->fldUsersPassword = Hash::make($data['password']);
+            }
+
+            // Save changes
+            $user->save();
+
+            $response_obj->error = false;
+            $response_obj->message = "Account updated successfully";
+        } catch (\Exception $e) {
+            $response_obj->error = true;
+            $response_obj->message = $e->getMessage();
+        }
+
+        return $response_obj;
+    }
+
+    // Delete Account
+    public function deleteUserAccount($id)
+    {
+        $response_obj = new \stdClass();
+
+        try {
+            // Find user by ID
+            $user = self::find($id);
+
+            if (!$user) {
+                $response_obj->error = true;
+                $response_obj->message = "User not found.";
+                return $response_obj;
+            }
+
+            // Delete user
+            $user->delete();
+
+            $response_obj->error = false;
+            $response_obj->message = "Account deleted successfully";
+        } catch (\Exception $e) {
+            $response_obj->error = true;
+            $response_obj->message = $e->getMessage();
+        }
+
+        return $response_obj;
+    }
+
+
+
+    // Get User Details
     public function displayUser() {
 
         return Auth::user();
     }
+
+    // Add for listing all users
+    public static function displayAllUsers()
+    {
+        return self::orderBy('created_at', 'desc')->get();
+        //return self::get();
+        //return self::get();
+    }
+
 
 
 }

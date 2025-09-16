@@ -16,7 +16,7 @@ class UserType extends GraphQLType
     {
         return [
             'id' => [
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::string(),
                 'alias' => 'fldUsersID',
             ],
             'name' => [
@@ -31,7 +31,10 @@ class UserType extends GraphQLType
                 'type' => Type::string(),
                 'alias' => 'fldUsersAddress',
             ],
-
+            'date_created' => [
+                'type' => Type::string(),
+                'alias' => 'created_at',
+            ],
         ];
     }
 

@@ -8,6 +8,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Query;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class UserQuery extends Query
 {
@@ -44,10 +45,16 @@ class UserQuery extends Query
 
         // return User::all();
        // log::debug($args);
+
         if($args['action_type'] == "display_user") {
             //return User::where('fldUsersID', session()->get('user_id'))->first();
             $user[] = $user_model->displayUser();
 
+            //log::debug(print_r($user, true));
+        }
+
+        if($args['action_type'] == "display_all_users") {
+            $user = $user_model->displayAllUsers();
             //log::debug(print_r($user, true));
         }
 

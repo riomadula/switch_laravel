@@ -26,12 +26,14 @@
           <td width="20%">{{ post.title }}</td>
           <td width="120">{{ post.blog_category.title }}</td>
           <td align="left">{{ post.content }}</td>
-          <td width="160">{{ post.author }}</td>
-          <td width="150">{{ dateFormatter(post.date_created) }}</td>
-          <td width="220" align="center" class="align-middle">
-            <button  type="button" class="btn btn-primary me-2">View</button>
-            <button  type="button" class="btn btn-warning me-2" @click="setEditPost(post)">Edit</button>
-            <button  type="button" class="btn btn-danger" @click="onDeletePost(post)">Delete</button>
+          <td width="160" align="center" class="align-middle">{{ post.author }}</td>
+          <td width="150" align="center" class="align-middle">{{ dateFormatter(post.date_created) }}</td>
+          <td width="170" align="center" class="align-middle">
+            <a :href="`/blog-details/${post.id}`" target="_blank">
+                <button  type="button" class="btn btn-primary me-2"><i class="far fa-eye"></i></button>
+            </a>
+            <button  type="button" class="btn btn-warning me-2" @click="setEditPost(post)"><i class="far fa-edit"></i></button>
+            <button  type="button" class="btn btn-danger" @click="onDeletePost(post)"><i class="far fa-trash-alt"></i></button>
           </td>
         </tr>
         <tr v-if="blog_posts.length > 0">
@@ -186,7 +188,7 @@ export default {
     },
 
     created() {
-        this.fetchCategories();
+        //this.fetchCategories();
         this.fetchBlogPosts();
     },
 
@@ -230,8 +232,7 @@ export default {
                     console.log(res.data.data.blog_posts);
 
                     this.blog_posts = res.data.data.blog_posts || [];
-
-
+                      this.fetchCategories();
                 })
                 .catch((err) => {
                     this.is_calling_api = false;
@@ -295,24 +296,15 @@ export default {
             this.editPost = { ...post };
         },
 
-        onEditPostModal() {
-            this.is_calling_api = true;
-            this.editPost.id = this.post.fldBlogPostID;
-            this.editPost.title = this.post.fld;
-            this.editPost.category_id = this.editPost.category_id;
-            this.editPost.content = this.editPost.content;
-            this.editPost.author = this.editPost.author;
-        },
-
         // ✅ Update Post
         onUpdate() {
             this.is_calling_api = true;
             this.$query("save_blog_post", {
                 blog_posts: {
                     action_type: "update_blog_post",
-                    id: this.editPost.id,
+                    id: this.editPost.id.toString(),
                     title: this.editPost.title,
-                    category_id: this.editPost.category_id,
+                    category_id: this.editPost.category_id.toString(),
                     content: this.editPost.content,
                     author: this.editPost.author,
                 },

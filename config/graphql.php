@@ -109,7 +109,7 @@ return [
             ],
             'mutation' => [
                 // ExampleMutation::class,
-                //"user" => App\GraphQL\Mutations\UserMutation::class,
+                "user" => App\GraphQL\Mutations\UserMutation::class,
                 "blog_category" => App\GraphQL\Mutations\BlogCategoryMutation::class,
                 "blog_posts" => App\GraphQL\Mutations\BlogPostsMutation::class,
             ],

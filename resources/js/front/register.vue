@@ -122,8 +122,7 @@ export default {
                     },
                 })
                 .then((res) => {
-
-                    console.log(res);
+                   // console.log(res);
                     this.is_calling_api = false
 
                     if (res.data.errors) {
@@ -156,8 +155,8 @@ export default {
                 .catch(() => {
                         this.is_calling_api = false
                         this.$swal("Error!", this.global_error_message, "error");
-                    });
-        },
+                });
+            },
 
         onClearError() {
             this.name_error = "";

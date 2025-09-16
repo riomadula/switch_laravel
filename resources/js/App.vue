@@ -7,7 +7,7 @@
     <!-- If logged in -->
     <div class="d-flex" id="wrapper" v-else-if="is_logged_in">
         <!-- User Header -->
-        <user-sidebar  />
+        <user-sidebar />
 
         <!-- Page content wrapper -->
         <div id="page-content-wrapper">

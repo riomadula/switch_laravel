@@ -2,6 +2,7 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 
 let queries = {
+    // For UnAuthenticated Users Action
     action_user: `mutation ($user: user_input) {
         user(user: $user) {
             error,
@@ -10,12 +11,20 @@ let queries = {
             refresh_token
         }
     }`,
+    // For Authenticated Users Action (Login, Register, Add New User)
+    save_user: `mutation ($user: user_input) {
+        user(user: $user) {
+            error,
+            message,
+        }
+    }`,
     user: `query ($action_type: String) {
         user(action_type: $action_type) {
             id,
             name,
             email,
-            address
+            address,
+            date_created
         }
     }`,
     blog_category: `query ($action_type: String) {
@@ -65,6 +74,7 @@ let queries = {
             category_id,
             content,
             author,
+            date_created,
             blog_category {
                 id,
                 title,
@@ -78,6 +88,7 @@ let queries = {
             category_id,
             content,
             author,
+            date_created,
             blog_category {
                 id,
                 title,
@@ -85,7 +96,7 @@ let queries = {
         }
     }`,
 };
-
+// For Authenticated Users: Required for all Queries
 const userQueries = [
     "user",
     "blog_category",
@@ -93,6 +104,7 @@ const userQueries = [
     "blog_posts",
     "save_blog_post",
     "blog_post_details",
+    "save_user",
 ];
 
 const getApiUrl = (queryName) => {

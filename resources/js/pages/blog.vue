@@ -3,12 +3,7 @@
     <h4>Blog</h4>
     <div class="container">
         <div class="row mt-n5">
-            <div
-                class="col-md-6 col-lg-4 mt-5 wow fadeInUp"
-                v-for="(post, index) in blog_posts"
-                :key="post.id"
-                :data-wow-delay="`${0.2 * (index + 1)}s`"
-            >
+            <div class="col-md-6 col-lg-4 mt-5 wow fadeInUp" v-for="(post, index) in blog_posts" :key="post.id" :data-wow-delay="`${0.2 * (index + 1)}s`">
                 <div class="blog-grid">
                     <div class="blog-grid-img position-relative">
                         <img alt="img" src="https://www.bootdey.com/image/480x480/00FFFF/000000"/>
@@ -58,7 +53,7 @@ export default {
     },
     // Load Categories and Blog Posts
     created() {
-        this.fetchCategories();
+        //this.fetchCategories();
         this.fetchBlogPosts();
     },
 

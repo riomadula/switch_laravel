@@ -10,7 +10,10 @@ import routes_user from "./routes_user.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "sweetalert2/dist/sweetalert2.min.css";
 
-// Mutliple Routes Declaration
+// Mutliple Routes Declaration- Separates routes between user and landing
+// User Routes - /login, /register, /forgot-password, /dashboard, /users, /blog-categories, /blog-posts
+// Landing Routes - /, /about, /services, /portfolio, /blog, /contact
+
 var allRoutes = [];
 allRoutes = allRoutes.concat(routes_landing, routes_user);
 const routes = allRoutes;

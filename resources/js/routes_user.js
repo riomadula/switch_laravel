@@ -12,7 +12,6 @@ export default [
     { path: "/login", name: "login", component: Login, },
     { path: "/register", name: "register", component: Register, },
     { path: "/forgot-password", name: "forgot-password", component: ForgotPassword },
-
     { path: "/dashboard", name: "dashboard", component: Dashboard, meta: { requiresAuth: true }, },
     { path: "/users", name: "users", component: Users, meta: { requiresAuth: true }, },
     { path: "/blog-categories", name: "blog-categories", component: BlogCategories, meta: { requiresAuth: true }, },

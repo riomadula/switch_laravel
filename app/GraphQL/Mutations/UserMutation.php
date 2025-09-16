@@ -8,6 +8,8 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\Mutation;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+
 
 use function Psy\debug;
 
@@ -30,14 +32,23 @@ class UserMutation extends Mutation
         $user = $args['user'];
         $rules = [];
 
-        if ($user['action_type'] == "register") {
+        if ($user['action_type'] == "register" || $user['action_type'] == "add_new_user") {
 
             // Fields validations
             $rules['user.name'] = ['required', 'string', 'max:255'];
             $rules['user.email'] = ['required', 'string', 'email', 'max:255', 'unique:tblUsers,fldUsersEmail'];
             $rules['user.address'] = ['required', 'string', 'max:255'];
-            $rules['user.password'] = ['required', 'string', 'min:8', 'max:255'];
+            $rules['user.password'] = ['required', 'string', 'min:8', 'max:16'];
             $rules['user.password_confirm'] = ['required', 'same:user.password'];
+
+        } else if ($user['action_type'] == "update_user_account") {
+            // Fields validations
+            $rules['user.name'] = ['required', 'string', 'max:255'];
+            $rules['user.email'] = ['required', 'string', 'email', 'max:255', 'unique:tblUsers,fldUsersEmail,'.$user['id'].',fldUsersID'];
+            //$rules['provider.email'] = ['required', 'email', 'unique:tblProvider,fldProviderEmail,' . $id . ',fldProviderID'];
+            //$rules['user.email'] = ['required','string','email','max:255',Rule::unique('tblUsers', 'fldUsersEmail')->ignore($user['id'], 'fldUsersID'),];
+
+            $rules['user.address'] = ['required', 'string', 'max:255'];
 
         } else if ($user['action_type'] == "login") {
 
@@ -49,6 +60,8 @@ class UserMutation extends Mutation
 
         return $rules;
     }
+
+
     public function validationErrorMessages(array $args = []): array
     {
         return [
@@ -59,23 +72,13 @@ class UserMutation extends Mutation
             'user.password.required' => 'Please enter your Password',
             'user.password_confirm.required' => 'Please confirm your Password',
             'user.password.min' => 'Password must be at least 8 characters',
-            'user.password.max' => 'Password must be at most 255 characters',
+            'user.password.max' => 'Password must be at most 16 characters',
             'user.password_confirm.same' => 'Passwords must match',
         ];
     }
 
     public function args(): array
     {
-        // return [
-        //     'id' => [
-        //         'name' => 'id',
-        //         'type' => Type::nonNull(Type::string()),
-        //     ],
-        //     'password' => [
-        //         'name' => 'password',
-        //         'type' => Type::nonNull(Type::string()),
-        //     ]
-        // ];
 
         return [
             'user' => ['type' => GraphQL::type('user_input')],
@@ -88,12 +91,30 @@ class UserMutation extends Mutation
         $user_model = new User();
         $user = $args['user'];
         $response_obj = new \stdClass();
+        log::debug($user);
 
         if ($user['action_type'] == "register") {
             $response_obj = $user_model->registerAccount($user);
         }
-        else if ($user['action_type'] == "login") {
+
+        if ($user['action_type'] == "add_new_user") {
+            $response_obj = $user_model->addNewUserAccount($user);
+        }
+
+        if ($user['action_type'] == "update_user_account") {
+            $response_obj = $user_model->updateUserAccount($user);
+        }
+
+        if ($user['action_type'] == 'delete_user_account') {
+            $response_obj = $user_model->deleteUserAccount($user['id']);
+        }
+
+        if ($user['action_type'] == "login") {
             $response_obj = $user_model->loginAccount($user);
+        }
+
+        if ($user['action_type'] == "display_user") {
+            $response_obj = $user_model->displayUser();
         }
 
         return $response_obj;

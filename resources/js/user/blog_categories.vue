@@ -16,7 +16,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Date Created</th>
-                    <th colspan="2" width="100" align="center">Actions</th>
+                    <th colspan="2" width="100" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,23 +24,21 @@
                     <td>{{ category.id }}</td>
                     <td>{{ category.title }}</td>
                     <td>{{ dateFormatter(category.date_created) }}</td>
-                    <td width="100" align="center">
+                    <td width="150" class="text-center">
                         <button
                             type="button"
-                            class="btn btn-warning"
+                            class="btn btn-warning me-2"
                             @click="setEditCategory(category)"
                             >
-                            Edit
+                            <i class="far fa-edit"></i>
                         </button>
-                    </td>
-                    <td width="100" align="center">
                         <button
                             type="button"
                             class="btn btn-danger"
                             @click="onDeleteCategory(category)"
                             data-bs-toggle="modal"
                             data-bs-target="#deleteRecordModal">
-                            Delete
+                            <i class="far fa-trash-alt"></i>
                         </button>
                     </td>
                 </tr>
@@ -162,7 +160,7 @@ export default {
                 })
                 .then((res) => {
                     this.is_calling_api = false;
-                    
+
                     if (res.data.errors) { // mutation
 
                         let errors = Object.values(res.data.errors[0].extensions.validation).flat();
@@ -204,25 +202,25 @@ export default {
                     title: this.editCategory.title,
                 },
             })
-                .then((res) => {
-                    this.is_calling_api = false;
-                    let response = res.data.data.blog_category;
+            .then((res) => {
+                this.is_calling_api = false;
+                let response = res.data.data.blog_category;
 
-                    if (response.error) {
-                        this.$swal("Error!", response.message, "error");
-                    } else {
+                if (response.error) {
+                    this.$swal("Error!", response.message, "error");
+                } else {
 
-                        this.$swal("Success!", response.message, "success")
-                            .then(() => this.fetchCategories());
-                            //hide modal
-                            $("#editRecordModal").modal("hide");
-                    }
-                })
-                .catch((err) => {
-                    console.error("Update failed:", err);
-                    this.is_calling_api = false;
-                    this.$swal("Error!", this.global_error_message, "error");
-                });
+                    this.$swal("Success!", response.message, "success")
+                        .then(() => this.fetchCategories());
+                        //hide modal
+                        $("#editRecordModal").modal("hide");
+                }
+            })
+            .catch((err) => {
+                console.error("Update failed:", err);
+                this.is_calling_api = false;
+                this.$swal("Error!", this.global_error_message, "error");
+            });
         },
 
         onDeleteCategory(category) {
@@ -245,7 +243,9 @@ export default {
             })
                 .then((res) => {
                     console.log(res);
+
                     this.is_calling_api = false;
+
                     let response = res.data.data.blog_category;
 
                     if (res.data.errors) {

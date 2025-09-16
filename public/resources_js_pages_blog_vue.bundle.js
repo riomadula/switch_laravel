@@ -24,7 +24,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   // Load Categories and Blog Posts
   created: function created() {
-    this.fetchCategories();
+    //this.fetchCategories();
     this.fetchBlogPosts();
   },
   methods: {

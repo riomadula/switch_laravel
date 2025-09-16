@@ -48,9 +48,6 @@ class BlogPostsType extends GraphQLType
             'blog_category' => [
                 'type' => GraphQL::type('blog_category_type')
             ],
-            'blogs_category' => [
-                'type' => GraphQL::type('blog_category_type')
-            ],
         ];
     }
 }

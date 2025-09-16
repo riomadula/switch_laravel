@@ -28,12 +28,6 @@ class ResponseType extends GraphQLType
             'refresh_token' => [
                 'type' => Type::string(),
             ],
-            'blog_posts' => [
-                'type' => GraphQL::type('blog_posts_type'),
-            ],
-            'blogs' => [
-                'type' => GraphQL::type('blog_posts_type'),
-            ],
         ];
     }
 

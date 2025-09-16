@@ -15,6 +15,9 @@ class UserInput extends InputType
     public function fields(): array
     {
         return [
+            'id' => [
+                'type' => Type::string(),
+            ],
             'name' => [
                 'type' => Type::string(),
             ],

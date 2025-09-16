@@ -59,7 +59,7 @@ __webpack_require__.r(__webpack_exports__);
           password_confirm: this.password_confirm
         }
       }).then(function (res) {
-        console.log(res);
+        // console.log(res);
         _this.is_calling_api = false;
         if (res.data.errors) {
           var errors = Object.values(res.data.errors[0].extensions.validation).flat();

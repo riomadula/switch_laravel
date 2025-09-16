@@ -41,6 +41,7 @@
 <script>
 export default {
     props: ["user"], // if not always passed
+
     name: "UserHeader",
 
     methods: {

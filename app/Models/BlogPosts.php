@@ -76,6 +76,14 @@ class BlogPosts extends Model
         //return self::get();
     }
 
+    // Get a single blog post by ID
+    public static function getBlogPostDetails($id)
+    {
+        return self::with('blog_category')->find($id);
+        // return self::where('fldBlogPostID', $id)->first();
+    }
+
+
     // Update a blog post
     public static function updateBlogPost($data)
     {
@@ -103,6 +111,7 @@ class BlogPosts extends Model
             $response_obj = new \stdClass();
 
             $blog_posts = self::find($data['id']);
+
             if (!$blog_posts) {
                 $response_obj->error = true;
                 $response_obj->message = "Post not found";
@@ -119,12 +128,7 @@ class BlogPosts extends Model
         return $response_obj;
     }
 
-    // Get a single blog post by ID
-    public static function getBlogPostDetails($id)
-    {
-        return self::with('blog_category')->find($id);
-        // return self::where('fldBlogPostID', $id)->first();
-    }
+
 
 
 }
