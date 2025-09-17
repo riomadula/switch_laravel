@@ -44,6 +44,11 @@ background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 
     font-size: 0.8em !important;
 }
 
+.swal2-icon.swal2-warning {
+    border-color: #ff7a35 !important;
+    color: #ff7a35 !important;
+}
+
 
 .loader {
     position: fixed;

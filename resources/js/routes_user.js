@@ -8,6 +8,7 @@ const BlogCategories = () => import("./user/blog_categories.vue");
 const BlogPosts = () => import("./user/blog_posts.vue");
 
 
+
 export default [
     { path: "/login", name: "login", component: Login, },
     { path: "/register", name: "register", component: Register, },
@@ -16,4 +17,5 @@ export default [
     { path: "/users", name: "users", component: Users, meta: { requiresAuth: true }, },
     { path: "/blog-categories", name: "blog-categories", component: BlogCategories, meta: { requiresAuth: true }, },
     { path: "/blog-posts", name: "blog-posts", component: BlogPosts, meta: { requiresAuth: true }, },
+
 ];

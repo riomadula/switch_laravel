@@ -30,8 +30,8 @@ class BlogCategory extends Authenticatable
             $response_obj = new \stdClass();
 
             $category->fldBlogCategoryTitle = $data['title'];
-            $category->fldBlogCategoryDateCreated = $data['date_created'];
-            $category->fldBlogCategoryDateModified = $data['date_modified'];
+            $category->fldBlogCategoryDateCreated = date('Y-m-d H:i:s');
+            $category->fldBlogCategoryDateModified = date('Y-m-d H:i:s');
 
             $category->save();
 

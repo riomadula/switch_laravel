@@ -6,13 +6,16 @@
             <router-link :to="{ name: 'dashboard' }" class="list-group-item list-group-item-action list-group-item-light p-3">
             Dashboard
             </router-link>
+
             <router-link :to="{ name: 'users' }" class="list-group-item list-group-item-action list-group-item-light p-3">
             Users
             </router-link>
+
             <router-link :to="{ name: 'blog-categories' }" class="list-group-item list-group-item-action list-group-item-light p-3">
             Blog Categories
             </router-link>
-             <router-link :to="{ name: 'blog-posts' }" class="list-group-item list-group-item-action list-group-item-light p-3">
+
+            <router-link :to="{ name: 'blog-posts' }" class="list-group-item list-group-item-action list-group-item-light p-3">
             Blog
             </router-link>
         </div>

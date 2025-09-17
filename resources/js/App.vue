@@ -12,7 +12,7 @@
         <!-- Page content wrapper -->
         <div id="page-content-wrapper">
             <!-- Sidebar Navigation -->
-             <user-header :user="user" />
+            <user-header :user="user" />
 
             <!--This is where each route's page will load -->
             <!-- dashboard.vue, users.vue, blog-categories.vue, blog-posts.vue -->
@@ -30,6 +30,7 @@
 </div>
 
 </template>
+
 <script>
 import UserHeader from "./includes/user/header.vue";
 import UserSidebar from "./includes/user/sidebar.vue";
