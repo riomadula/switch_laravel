@@ -18,7 +18,7 @@ class BlogPostsType extends GraphQLType
     {
         return [
             'id' => [
-                'type' => Type::nonNull(Type::int()),
+                'type' => Type::string(),
                 'alias' => 'fldBlogPostID',
             ],
             'title' => [
@@ -47,6 +47,9 @@ class BlogPostsType extends GraphQLType
             ],
             'blog_category' => [
                 'type' => GraphQL::type('blog_category_type')
+            ],
+            'blog_post' => [
+                'type' => Type::string(),
             ],
         ];
     }

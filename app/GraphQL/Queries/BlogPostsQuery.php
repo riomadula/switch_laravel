@@ -41,7 +41,9 @@ class BlogPostsQuery extends Query {
 
         // Fetch all blog posts
         if ($args['action_type'] === 'list_all_blog_posts') {
-            $blog_posts = $blog_posts_model->getAllBlogPosts();
+            //$blog_posts = $blog_posts_model->getAllBlogPosts();
+            $blog_posts = $blog_posts_model->getAllBlogPostsByDate();
+
         }
 
         // Fetch single post by ID

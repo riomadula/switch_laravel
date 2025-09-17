@@ -42,9 +42,10 @@ class BlogCategoryQuery extends Query
             return $blog_category;
         }
 
-        if ($args['action_type'] === 'list_all_blog_categories') {
+        if ($args['action_type'] === 'list_all_blog_categories_by_date') {
 
-            $blogs_category = $blog_category_model->getAllBlogCategories();
+            //$blogs_category = $blog_category_model->getAllBlogCategories();
+            $blogs_category = $blog_category_model->getAllBlogCategoriesByDate();
 
             return $blogs_category;
         }

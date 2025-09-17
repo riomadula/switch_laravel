@@ -39,7 +39,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       this.is_calling_api = true;
       this.$query("blog_category", {
-        action_type: "list_all_blog_categories"
+        action_type: "list_all_blog_categories_by_date"
       }).then(function (res) {
         _this.is_calling_api = false;
         _this.record_Count = res.data.data.blog_category.length;

@@ -54,17 +54,6 @@ let queries = {
         blog_posts(blog_posts: $blog_posts) {
             error,
             message,
-            blog_posts {
-                id,
-                title,
-                category_id,
-                content,
-                author,
-                blog_category {
-                    id,
-                    title,
-                },
-            }
         }
     }`,
     blog_posts: `query ($action_type: String, $id: String) {

@@ -82,7 +82,7 @@ export default {
         fetchCategories() {
             this.is_calling_api = true;
             this.$query("blog_category", {
-                action_type: "list_all_blog_categories",
+                action_type: "list_all_blog_categories_by_date",
             })
                 .then((res) => {
                     this.is_calling_api = false;
