@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Config as Config;
 use stdClass;
+use App\Models\Helper;
 
 class BlogPosts extends Model
 {
@@ -20,6 +22,7 @@ class BlogPosts extends Model
     protected $primaryKey = 'fldBlogPostID';
     public $timestamps = false;  // Disable default timestamps since using custom
 
+
     // Relationship with Blog Category
     public function blog_category(): BelongsTo
     {
@@ -27,12 +30,15 @@ class BlogPosts extends Model
     }
 
     // Create New Blog Post
-    public static function createNewBlogPost($data) {
+    public static function createNewBlogPost($data, $file) {
 
         try {
-            // $post = new BlogPosts();
+
+            $messages = Config::get('Constants.MESSAGES');
+
             $blog_posts = new self;
             $response_obj = new \stdClass();
+            $helper_model = new Helper();
 
             $blog_posts->fldBlogPostTitle = $data['title'];
             $blog_posts->fldBlogPostCategoryID = $data['category_id'];
@@ -43,8 +49,16 @@ class BlogPosts extends Model
 
             $blog_posts->save();
 
+            if ($file) {
+                $filename = $helper_model->ImageUpload($file, $blog_posts->fldBlogPostID, 'blog_post');
+                // log::debug('filename: ' . $filename);
+                $blog_posts->fldBlogPostImage = $filename;
+                $blog_posts->save();
+            }
+
             $response_obj->error = false;
-            $response_obj->message = "New Blog Post created successfully";
+            // $response_obj->message = "New Blog Post created successfully";
+            $response_obj->message = $messages['SAVE_SUCCESS'];
 
         } catch (\Exception $e) {
             // Optional: Log the error
@@ -88,6 +102,7 @@ class BlogPosts extends Model
     public static function updateBlogPost($data)
     {
         $response_obj  = new \stdClass();
+        $messages = Config::get('Constants.MESSAGES');
 
         $blog_posts = self::find($data['id']);
 
@@ -95,11 +110,12 @@ class BlogPosts extends Model
         $blog_posts->fldBlogPostCategoryID = $data['category_id'];
         $blog_posts->fldBlogPostContent = $data['content'];
         $blog_posts->fldBlogPostAuthor = $data['author'];
+        $blog_posts->fldBlogPostImage = $data['photo'];
         $blog_posts->fldBlogPostDateModified = date('Y-m-d H:i:s');
         $blog_posts->save();
 
         $response_obj->error = false;
-        $response_obj->message = "Blog Post updated successfully";
+        $response_obj->message = $messages["UPDATE_SUCCESS"];
 
         return $response_obj;
     }
@@ -109,6 +125,7 @@ class BlogPosts extends Model
     {
         // try {
             $response_obj = new \stdClass();
+             $messages = Config::get('Constants.MESSAGES');
 
             $blog_posts = self::find($data['id']);
 
@@ -119,7 +136,7 @@ class BlogPosts extends Model
                 $blog_posts->delete();
 
                 $response_obj->error = false;
-                $response_obj->message = "Post deleted successfully";
+                $response_obj->message = $messages["DELETE_SUCCESS"];
             }
         // } catch (\Exception $e) {
         //     $response_obj->error = true;

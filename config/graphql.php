@@ -152,6 +152,7 @@ return [
         'user_type' => App\GraphQL\Types\UserType::class,
         'blog_category_type' => App\GraphQL\Types\BlogCategoryType::class,
         'blog_posts_type' => App\GraphQL\Types\BlogPostsType::class,
+        'Upload' => \Rebing\GraphQL\Support\UploadType::class,
     ],
 
     // This callable will be passed the Error object for each errors GraphQL catch.

@@ -20,8 +20,8 @@ class OAuthHelper extends Authenticatable
 {
   use HasApiTokens, Notifiable;
 
-    private $user_client_secret = 'tm6tg5ja41WFVdKWrYsD4clTi9RIS9DHqVfK00tp';
-    private $user_client_id = '2';
+    private $user_client_secret = 'tsj4nDWGZsdhREo3hjH4dodkX8ZwoJJrfVXhzfcU';
+    private $user_client_id = '1';
 
     public function GenerateUserToken($email, $password)
     {

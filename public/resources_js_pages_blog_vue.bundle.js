@@ -133,7 +133,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "blog-grid-img position-relative"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
       alt: "img",
-      src: "https://www.bootdey.com/image/480x480/00FFFF/000000"
+      src: "http://switch_laravel.local/public/assets/learning-brainstorm.png",
+      "class": "img-fluid"
     })], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(post.title) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a href=\"#!\">{{ post.title }}</a> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.truncate(post.content, 100)) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
       to: {
         name: 'blog-details',

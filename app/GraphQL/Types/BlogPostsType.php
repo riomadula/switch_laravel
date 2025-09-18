@@ -37,6 +37,10 @@ class BlogPostsType extends GraphQLType
                 'type' => Type::string(),
                 'alias' => 'fldBlogPostAuthor',
             ],
+            'photo' => [
+                'type' => Type::string(),
+                'alias' => 'fldBlogPostImage',
+            ],
             'date_created' => [
                 'type' => Type::string(),
                 'alias' => 'fldBlogPostDateCreated',
@@ -44,6 +48,10 @@ class BlogPostsType extends GraphQLType
             'date_modified' => [
                 'type' => Type::string(),
                 'alias' => 'fldBlogPostDateModified',
+            ],
+            'blog_post_image' => [
+                'type' => Type::string(),
+                'alias' => 'fldBlogPostImage',
             ],
             'blog_category' => [
                 'type' => GraphQL::type('blog_category_type')

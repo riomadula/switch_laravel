@@ -18,6 +18,15 @@ class BlogPostsMutation extends Mutation
         'description' => 'A Blog Posts Mutation'
     ];
 
+    public function args(): array
+    {
+        return [
+            'blog_posts' => ['type' => GraphQL::type('blog_posts_input')],
+            'file' => ['type' => GraphQL::type('Upload')],
+        ];
+
+    }
+
      public function type(): Type
     {
         // return Type::nonNull(GraphQL::type('User'));
@@ -37,6 +46,7 @@ class BlogPostsMutation extends Mutation
             $rules['blog_posts.category_id'] = ['required', 'integer'];
             $rules['blog_posts.content'] = ['required', 'string'];
             $rules['blog_posts.author'] = ['required', 'string', 'max:255'];
+            $rules['file'] = ['required', 'image', 'max:5000'];
         }
 
         return $rules;
@@ -49,16 +59,13 @@ class BlogPostsMutation extends Mutation
             'blog_posts.category_id.required' => 'Please select Blog Post Category',
             'blog_posts.content.required' => 'Please write Blog Post Content',
             'blog_posts.title.unique' => 'Blog Post Title already exists',
+            'file.image' => 'Please upload an image',
+            'file.max' => 'File size must be less than 5MB',
+            'file.required' => 'Please upload an image',
         ];
     }
 
-    public function args(): array
-    {
-        return [
-            'blog_posts' => ['type' => GraphQL::type('blog_posts_input')],
-        ];
 
-    }
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
@@ -67,7 +74,7 @@ class BlogPostsMutation extends Mutation
         $response_obj = new \stdClass();
 
         if ($blog_posts['action_type'] == "create_new_blog_post") {
-            $response_obj = $blog_posts_model->createNewBlogPost($blog_posts);
+            $response_obj = $blog_posts_model->createNewBlogPost($blog_posts, $args['file']);
         }
 
         if ($blog_posts['action_type'] == 'update_blog_post') {

@@ -32,6 +32,9 @@ class BlogPostsInput extends InputType
             'author' => [
                 'type' => Type::string(),
             ],
+            'photo' => [
+                'type' => Type::string(),
+            ],
             'action_type' => [
                 'type' => Type::string(),
             ],

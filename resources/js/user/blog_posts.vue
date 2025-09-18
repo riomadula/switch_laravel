@@ -17,6 +17,7 @@
           <th>Category</th>
           <th>Content</th>
           <th>Author</th>
+          <th>Photo</th>
           <th>Date Created</th>
           <th class="text-center">Actions</th>
         </tr>
@@ -25,8 +26,17 @@
         <tr v-if = "blog_posts.length > 0" v-for="post in blog_posts" :key="post.id">
           <td width="20%">{{ post.title }}</td>
           <td width="120">{{ post.blog_category.title }}</td>
-          <td align="left">{{ post.content }}</td>
+          <td align="left">
+            {{ post.content }}
+
+          </td>{{  }}
           <td width="160" align="center" class="align-middle">{{ post.author }}</td>
+          <td width="160" align="center" class="align-middle" v-if="post.blog_post_image">
+            <img :src="`/public/uploads/blog_post/${post.id}/${post.blog_post_image}`" alt="img" width="100" height="100" />
+          </td>
+          <td width="160" align="center" class="align-middle" v-else>
+            <!-- <img src="/public/assets/claude-code-workflows-tools.png" alt="img" width="100" height="100" /> -->
+          </td>
           <td width="150" align="center" class="align-middle">{{ dateFormatter(post.date_created) }}</td>
           <td width="170" align="center" class="align-middle">
             <a :href="`/blog-details/${post.id}`" target="_blank">
@@ -80,6 +90,11 @@
                             <label for="name" class="form-label">Content</label>
                             <textarea type="textArea" rows="10" class="form-control" id="name" v-model="createPost.content" />
                             <div v-if="blogPostsContentError" class="text-danger mt-1">{{ blogPostsContentError }}</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Blog Post Image</label>
+                            <input type="file" rows="10" class="form-control" id="name" @change="onFileChange" ref="fileInput" />
+                            <div v-if="blogPostsPhotoError" class="text-danger mt-1">{{ blogPostsPhotoError }}</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -150,12 +165,15 @@ export default {
         return {
             blog_posts: [],
             blog_category: [],
+            blog_image: '',
+            blog_image_name: '',
 
             createPost: {
                 title: "",
                 category_id: "",
                 content: "",
                 author: "",
+                photo: "",
             },
 
             editPost: {
@@ -163,7 +181,8 @@ export default {
                 title: "",
                 category_id: "",
                 content: "",
-                postAuthor: ""
+                postAuthor: "",
+                photo: "",
             },
 
             deletePost: {
@@ -175,6 +194,7 @@ export default {
             blogPostsContentError: "",
             blogPostsCategoryTitleError: "",
             blogPostsAuthorError: "",
+            blogPostsPhotoError: "",
 
             blogCategoryId: "",
             blogCategoryTitle: "",
@@ -245,6 +265,7 @@ export default {
             this.is_calling_api = true;
             this.onClearError()
 
+console.log('file: ', this.blog_image);
 
             this.$query("save_blog_post", {
                 blog_posts: {
@@ -253,7 +274,9 @@ export default {
                     category_id: this.createPost.category_id.toString(),
                     content: this.createPost.content,
                     author: this.user.name,
+                    photo: this.createPost.photo,
                 },
+                file: this.blog_image,
             })
                 .then((res) => {
 
@@ -268,6 +291,7 @@ export default {
                         this.blogPostsTitleError = errors_keys.some((q) => q == "blog_posts.title") ? errors[errors_keys.indexOf("blog_posts.title")] : "";
                         this.blogPostsCategoryTitleError = errors_keys.some((q) => q == "blog_posts.category_id") ? errors[errors_keys.indexOf("blog_posts.category_id")] : "";
                         this.blogPostsContentError = errors_keys.some((q) => q == "blog_posts.content") ? errors[errors_keys.indexOf("blog_posts.content")] : "";
+                        this.blogPostsPhotoError = errors_keys.some((q) => q == "file") ? errors[errors_keys.indexOf("file")] : "";
 
                     } else {
                         // Success
@@ -307,6 +331,7 @@ export default {
                     category_id: this.editPost.category_id.toString(),
                     content: this.editPost.content,
                     author: this.editPost.author,
+                    photo: this.editPost.photo,
                 },
             })
                 .then((res) => {
@@ -364,11 +389,17 @@ export default {
             });
         },
 
+        onFileChange(e) {
+            this.blog_image = e.target.files[0];
+            this.blog_image_name = this.blog_image.name;
+        },
 
+        /**** ****/
         resetForm() {
             this.createPost.title = "";
             this.createPost.category_id = "";
             this.createPost.content = "";
+            this.createPost.photo = "";
         },
 
         dateFormatter(date) {
@@ -379,6 +410,7 @@ export default {
             this.blogPostTitleError = "";
             this.blogPostCategoryError = "";
             this.blogPostContentError = "";
+            this.blogPostsPhtotoError = "";
         }
 
 
