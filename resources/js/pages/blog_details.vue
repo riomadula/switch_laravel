@@ -6,11 +6,27 @@
                     <div class="card single_post">
                         <div class="body">
                             <div class="img-post">
-                                <img class="d-block img-fluid" src="https://www.bootdey.com/image/800x280/87CEFA/000000" alt="First slide">
+                                <img class="d-block img-fluid" :src="`/public/uploads/blog_post/${blog_posts.id}/${blog_posts.photo}`" alt="img" />
                             </div>
                             <h3 class="h5 mb-3">{{ blog_posts.title }}</h3>
-                            <p>{{ blog_posts.author }} | {{ blog_posts?.blog_category?.title }}</p>
                             <p>{{ blog_posts.content }}</p>
+                            <p>&nbsp;</p>
+                            <div class="meta meta-style2">
+                                <ul>
+                                   <li>
+                                        <a href="#!">
+                                            <i class="fas fa-calendar-alt"></i>
+                                              {{ helper.fullDate(blog_posts.date_created) }}
+                                              ({{ helper.timeAgo(blog_posts.date_created) }})
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#!">
+                                            <i class="fas fa-user"></i>{{ blog_posts.author }} | {{ blog_posts?.blog_category?.title }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,6 +50,8 @@
     </div>
 </template>
 <script>
+// import moment from "moment";
+
 export default {
     name: "BlogDetails",
     props: ["id"],
@@ -91,14 +109,6 @@ export default {
                 console.error("Fetch blog posts failed:", err);
             });
         },
-
-        dateFormatter(date) {
-            return moment(date).format("MMM D, YYYY");
-        },
-
-
-
-
     },
 };
 </script>

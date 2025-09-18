@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config as Config;
-use stdClass;
+use App\Models\BlogCategory;
 use App\Models\Helper;
+use stdClass;
 
 class BlogPosts extends Model
 {
@@ -99,23 +100,41 @@ class BlogPosts extends Model
 
 
     // Update a blog post
-    public static function updateBlogPost($data)
+    public static function updateBlogPost($data,$file)
     {
-        $response_obj  = new \stdClass();
-        $messages = Config::get('Constants.MESSAGES');
+        try {
 
-        $blog_posts = self::find($data['id']);
+            $response_obj  = new \stdClass();
+            $helper_model = new Helper();
+            $messages = Config::get('Constants.MESSAGES');
 
-        $blog_posts->fldBlogPostTitle = $data['title'];
-        $blog_posts->fldBlogPostCategoryID = $data['category_id'];
-        $blog_posts->fldBlogPostContent = $data['content'];
-        $blog_posts->fldBlogPostAuthor = $data['author'];
-        $blog_posts->fldBlogPostImage = $data['photo'];
-        $blog_posts->fldBlogPostDateModified = date('Y-m-d H:i:s');
-        $blog_posts->save();
+            $blog_posts = self::find($data['id']);
 
-        $response_obj->error = false;
-        $response_obj->message = $messages["UPDATE_SUCCESS"];
+            $blog_posts->fldBlogPostTitle = $data['title'];
+            $blog_posts->fldBlogPostCategoryID = $data['category_id'];
+            $blog_posts->fldBlogPostContent = $data['content'];
+            $blog_posts->fldBlogPostAuthor = $data['author'];
+            $blog_posts->fldBlogPostDateModified = date('Y-m-d H:i:s');
+            $blog_posts->save();
+
+             if ($file) {
+                $filename = $helper_model->ImageUpload($file, $blog_posts->fldBlogPostID, 'blog_post');
+                // log::debug('filename: ' . $filename);
+                $blog_posts->fldBlogPostImage = $filename;
+                $blog_posts->save();
+            }
+
+
+                $response_obj->error = false;
+                $response_obj->message = $messages["UPDATE_SUCCESS"];
+
+        } catch(\Exception $e) {
+
+            $response_obj->error = true;
+            $response_obj->message = $e->getMessage();
+
+        }
+
 
         return $response_obj;
     }

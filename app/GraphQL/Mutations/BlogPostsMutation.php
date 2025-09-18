@@ -79,7 +79,7 @@ class BlogPostsMutation extends Mutation
 
         if ($blog_posts['action_type'] == 'update_blog_post') {
             //return BlogPosts::updateBlogPost($input['id'], $input);
-            $response_obj = $blog_posts_model->updateBlogPost($blog_posts);
+            $response_obj = $blog_posts_model->updateBlogPost($blog_posts, $args['file']);
         }
 
         if ($blog_posts['action_type'] == 'delete_blog_post') {

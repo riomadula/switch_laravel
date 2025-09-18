@@ -5,7 +5,8 @@ import App from "./App.vue";
 import query from "./queries.js";
 import routes_landing from "./routes.js";
 import routes_user from "./routes_user.js";
-
+import helpers from "./utils/helper.js";
+// import { truncate2 } from "./utils/filters.js"; // option 2
 
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -55,6 +56,8 @@ router.beforeEach((to, from, next) => {
 const app = createApp(App);
 
 app.config.globalProperties.$query = query;
+app.config.globalProperties.helper = helpers;
+// app.config.globalProperties.truncate2 = truncate2; option 2
 
 app.config.globalProperties.global_error_message = "Something went wrong. Please try again later.";
 

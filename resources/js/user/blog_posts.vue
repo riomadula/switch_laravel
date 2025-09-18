@@ -141,7 +141,11 @@
                             <textarea type="textArea" rows="10" class="form-control" id="name" v-model="editPost.content" />
                             <div v-if="blogPostsContentError" class="text-danger mt-1">{{ blogPostsContentError }}</div>
                         </div>
-
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Blog Post Image</label>
+                            <input type="file" rows="10" class="form-control" id="name" @change="onFileChange" ref="fileInput" />
+                            <div v-if="blogPostsPhotoError" class="text-danger mt-1">{{ blogPostsPhotoError }}</div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -265,7 +269,7 @@ export default {
             this.is_calling_api = true;
             this.onClearError()
 
-console.log('file: ', this.blog_image);
+            console.log('file: ', this.blog_image);
 
             this.$query("save_blog_post", {
                 blog_posts: {
@@ -333,6 +337,7 @@ console.log('file: ', this.blog_image);
                     author: this.editPost.author,
                     photo: this.editPost.photo,
                 },
+                file: this.blog_image,
             })
                 .then((res) => {
                     this.is_calling_api = false;
@@ -400,6 +405,7 @@ console.log('file: ', this.blog_image);
             this.createPost.category_id = "";
             this.createPost.content = "";
             this.createPost.photo = "";
+            this.blog_image_name = "";
         },
 
         dateFormatter(date) {
@@ -408,7 +414,7 @@ console.log('file: ', this.blog_image);
 
         onClearError() {
             this.blogPostTitleError = "";
-            this.blogPostCategoryError = "";
+            this.blogPostsCategoryTitleError = "";
             this.blogPostContentError = "";
             this.blogPostsPhtotoError = "";
         }

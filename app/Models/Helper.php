@@ -41,7 +41,7 @@ public function ImageUpload($file, $id, $type, $other_id = null)
         $file->move($destinationPath, $filename);
 
         $sizes = [
-            Config::get('Constants.LARGE') => 800,
+            Config::get('Constants.LARGE') => 800, // 800px
             Config::get('Constants.MEDIUM') => 500,
             Config::get('Constants.SMALL') => 300,
             Config::get('Constants.THUMB') => 300
@@ -53,6 +53,10 @@ public function ImageUpload($file, $id, $type, $other_id = null)
             }
         }
 
+        // if (File::exists($destinationPath)) {
+        //     File::deleteDirectory($destinationPath);
+        // }
+
         $destinationPathFile = $destinationPath . $filename;
         // Log::debug('Destination Path File: ' . $destinationPathFile);
 
@@ -63,13 +67,31 @@ public function ImageUpload($file, $id, $type, $other_id = null)
             $img->save($destinationPath . $folder . $filename, 90);
         } */
 
+
+
        foreach ($sizes as $folder => $width) {
-            $img = Image::read($destinationPathFile)
+            /* $img = Image::read($destinationPathFile)
                 ->resize($width, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
+            $img->save($destinationPath . $folder . $filename, 90); */
+
+            $img = Image::read($destinationPathFile);
+            if ($folder === Config::get('Constants.THUMB')) {
+                // Make perfect square thumbnail
+                $img->cover($width, $width);
+            } else {
+                // Keep aspect ratio, don’t upscale
+                $img->resize($width, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
             $img->save($destinationPath . $folder . $filename, 90);
+
         }
+
+
 
 
         if ($id == 0) {

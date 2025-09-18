@@ -6,24 +6,25 @@
             <div class="col-md-6 col-lg-4 mt-5 wow fadeInUp" v-for="(post, index) in blog_posts" :key="post.id" :data-wow-delay="`${0.2 * (index + 1)}s`">
                 <div class="blog-grid">
                     <div class="blog-grid-img position-relative">
-                        <img alt="img" src="http://switch_laravel.local/public/assets/learning-brainstorm.png" class="img-fluid"/>
+                        <img alt="img" :src="`/public/uploads/blog_post/${post.id}/${post.photo}`" class="img-fluid" height="480"/>
                     </div>
                     <div class="blog-grid-text p-4">
                         <h3 class="h5 mb-3">{{ post.title }}
                             <!-- <a href="#!">{{ post.title }}</a> -->
                         </h3>
                         <p class="display-30">
-                            {{ truncate(post.content, 100) }}
+                            {{ helper.truncate(post.content, 100) }}
                             <router-link :to="{ name: 'blog-details', params: { id: post.id } }">
-                                Read More...
+                                <strong>[ Read More ]</strong>
                             </router-link>
                         </p>
-                        <div class="meta meta-style2">
+                        <div class="meta " >
                             <ul>
                                 <li>
                                     <a href="#!">
                                         <i class="fas fa-calendar-alt"></i>
-                                        {{ showDate(post.date_created) }}
+                                            {{ helper.fullDate(post.date_created) }}
+                                            ({{ helper.timeAgo(post.date_created) }})
                                     </a>
                                 </li>
                                 <li>
@@ -106,15 +107,6 @@ export default {
                 });
         },
 
-        showDate(date) {
-            return moment(date).format("MMM D, YYYY");
-        },
-
-        truncate(text, length) {
-            return text && text.length > length
-                ? text.substring(0, length) + "..."
-                : text;
-        },
     },
 
 };

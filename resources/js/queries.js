@@ -124,6 +124,7 @@ const query = (queryName, queryVariables) => {
         token = CryptoJS.AES.decrypt(encryptedToken, secret_passphrase).toString(CryptoJS.enc.Utf8);
 
     }
+    
     if (uploadQueries.some((q) => q === queryName)) {
         let bodyFormData = new FormData();
 

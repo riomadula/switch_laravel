@@ -11,6 +11,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+// import moment from "moment";
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "BlogDetails",
   props: ["id"],
@@ -57,9 +59,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.is_calling_api = false;
         console.error("Fetch blog posts failed:", err);
       });
-    },
-    dateFormatter: function dateFormatter(date) {
-      return moment(date).format("MMM D, YYYY");
     }
   }
 });
@@ -98,34 +97,49 @@ var _hoisted_6 = {
   "class": "body"
 };
 var _hoisted_7 = {
+  "class": "img-post"
+};
+var _hoisted_8 = ["src"];
+var _hoisted_9 = {
   "class": "h5 mb-3"
 };
-var _hoisted_8 = {
-  "class": "col-lg-4 col-md-12 right-box"
-};
-var _hoisted_9 = {
-  "class": "card"
-};
 var _hoisted_10 = {
-  "class": "body widget"
+  "class": "meta meta-style2"
 };
 var _hoisted_11 = {
-  "class": "list-unstyled categories-clouds m-b-0"
+  href: "#!"
 };
 var _hoisted_12 = {
+  href: "#!"
+};
+var _hoisted_13 = {
+  "class": "col-lg-4 col-md-12 right-box"
+};
+var _hoisted_14 = {
+  "class": "card"
+};
+var _hoisted_15 = {
+  "class": "body widget"
+};
+var _hoisted_16 = {
+  "class": "list-unstyled categories-clouds m-b-0"
+};
+var _hoisted_17 = {
   href: "javascript:void(0);"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$data$blog_posts, _$data$blog_posts2;
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "img-post"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "d-block img-fluid",
-    src: "https://www.bootdey.com/image/800x280/87CEFA/000000",
-    alt: "First slide"
-  })], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blog_posts.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blog_posts.author) + " | " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$data$blog_posts = $data.blog_posts) === null || _$data$blog_posts === void 0 || (_$data$blog_posts = _$data$blog_posts.blog_category) === null || _$data$blog_posts === void 0 ? void 0 : _$data$blog_posts.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blog_posts.content), 1 /* TEXT */)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Categories Clouds "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    src: "/public/uploads/blog_post/".concat($data.blog_posts.id, "/").concat($data.blog_posts.photo),
+    alt: "img"
+  }, null, 8 /* PROPS */, _hoisted_8)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blog_posts.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blog_posts.content), 1 /* TEXT */), _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, " ", -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_11, [_cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-calendar-alt"
+  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.helper.fullDate($data.blog_posts.date_created)) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.helper.timeAgo($data.blog_posts.date_created)) + ") ", 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_12, [_cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": "fas fa-user"
+  }, null, -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.blog_posts.author) + " | " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$data$blog_posts = $data.blog_posts) === null || _$data$blog_posts === void 0 || (_$data$blog_posts = _$data$blog_posts.blog_category) === null || _$data$blog_posts === void 0 ? void 0 : _$data$blog_posts.title), 1 /* TEXT */)])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Categories Clouds "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "header"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Categories Clouds")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$data$blog_posts2 = $data.blog_posts) === null || _$data$blog_posts2 === void 0 || (_$data$blog_posts2 = _$data$blog_posts2.blog_category) === null || _$data$blog_posts2 === void 0 ? void 0 : _$data$blog_posts2.title), 1 /* TEXT */)])])])])])])])]);
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Categories Clouds")], -1 /* CACHED */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$data$blog_posts2 = $data.blog_posts) === null || _$data$blog_posts2 === void 0 || (_$data$blog_posts2 = _$data$blog_posts2.blog_category) === null || _$data$blog_posts2 === void 0 ? void 0 : _$data$blog_posts2.title), 1 /* TEXT */)])])])])])])])]);
 }
 
 /***/ }),
