@@ -1,44 +1,62 @@
 <template>
-    <div class="container">
+    <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- <router-link class="navbar-brand" :to="{ name: 'home' }">MyApp</router-link> -->
-             <a class="navbar-brand" href="javascript:void(0)" @click="onReload">MyApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'home' }">Home</router-link>
-
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
-                    </li>
-                </ul>
+            <div class="container">
+                <!-- <router-link class="navbar-brand" :to="{ name: 'home' }">MyApp</router-link> -->
+                <a class="navbar-brand" href="javascript:void(0)" @click="onReload">Switch Laravel</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'home' }">Home</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
+                        </li>
+                         <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'services' }">Services</router-link>
+                        </li>
+                         <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'portfolio' }">Portfolio</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'blog' }">Blog</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'contact' }">Contact</router-link>
+                        </li>
+                    </ul>
+                    <!-- {{ user }} -->
+                    <ul v-if="!user || Object.keys(user).length === 0" class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
     </div>
-
 </template>
 
 <script>
 export default {
+    props: ["user"],
     name: "WebHeader",
     methods: {
         onReload() {
             window.location.href = "/";
-        }
+        },
+        onLogout() {
+            this.is_logged_in = false;
+            sessionStorage.clear();
+            window.location.href = "/login";
+            this.$emit("update:is_logged_in", false);
+        },
     }
 }
 </script>
